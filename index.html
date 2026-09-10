@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#faf5e9" />
+    <meta name="description" content="点一点，让小鸡在花园里快乐地破壳而出。" />
+    <title>Hatch Garden · 孵蛋花园</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section id="game-shell" class="game-shell" aria-label="孵蛋花园游戏场地">
+        <div id="game-canvas" class="game-canvas" aria-label="点击场地让母鸡下蛋" role="application"></div>
+        <div class="hud" aria-live="polite">
+          <div class="score-card" aria-label="本局下蛋数">
+            <img src="./eggs/egg-whole.svg" alt="" />
+            <div>
+              <span>本局下蛋</span>
+              <strong id="session-score">000</strong>
+            </div>
+          </div>
+          <div class="hud-actions">
+            <button id="sound-button" class="icon-button" type="button" aria-label="关闭声音">
+              <img id="sound-icon" src="./ui/sound-on.svg" alt="" />
+            </button>
+            <button id="fullscreen-button" class="icon-button" type="button" aria-label="进入全屏模式" hidden>
+              <img id="fullscreen-icon" src="./ui/fullscreen.svg" alt="" />
+            </button>
+            <button id="pause-button" class="icon-button" type="button" aria-label="暂停游戏">
+              <img id="pause-icon" src="./ui/pause.svg" alt="" />
+            </button>
+          </div>
+        </div>
+
+        <section id="pause-panel" class="pause-panel" hidden aria-labelledby="pause-title">
+          <div class="pause-card">
+            <img src="./characters/chick-hatch.svg" alt="一只开心的小鸡" />
+            <p class="game-name">Hatch Garden · 孵蛋花园</p>
+            <h2 id="pause-title">暂停中</h2>
+            <p class="pause-instructions">点击场地或按空格下蛋。蛋会从母鸡身边的空位出现。</p>
+            <p id="pause-message">回来后继续看小鸡破壳。</p>
+            <div class="pause-actions">
+              <button id="resume-button" class="primary-button" type="button">继续玩</button>
+              <button id="restart-button" class="secondary-button" type="button">重新开始本局</button>
+            </div>
+          </div>
+        </section>
+      </section>
+      <p id="status-message" class="sr-only" aria-live="polite"></p>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
