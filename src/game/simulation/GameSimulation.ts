@@ -1,3 +1,4 @@
+import { EggPlacement } from './EggPlacement';
 import type {
   Adult,
   Chick,
@@ -90,6 +91,8 @@ export class GameSimulation {
   private lastLayOperationAt = 0;
   private completedIdleExitWaves = 0;
   private overcrowdedExitCooldown = 0;
+  private cachedSlots: Point[] | undefined;
+  private cachedSnapshot: GameSnapshot | undefined;
 
   constructor(seed = 0x51c3d) {
     this.random = new SeededRandom(seed);
@@ -113,14 +116,16 @@ export class GameSimulation {
     if (adults.length === 0 && this.adults.length > 0) {
       return { accepted: false, reason: 'no-space' };
     }
+    const placement = new EggPlacement(this.eggSlots(), this.eggSpacing(), this.eggs);
     const plans = adults.length > 0
-      ? this.planAdultEggs(adults)
-      : this.planCentreEgg();
+      ? this.planAdultEggs(adults, placement)
+      : this.planCentreEgg(placement);
     if (plans.length === 0) {
       return { accepted: false, reason: 'no-space' };
     }
 
     this.layCooldown = LAY_COOLDOWN;
+    this.cachedSnapshot = undefined;
     for (const { adult, target } of plans) {
       if (adult) {
         adult.layClock = 0.33;
@@ -131,7 +136,7 @@ export class GameSimulation {
       this.score += 1;
       this.events.push({ type: 'egg-laid', eggId: egg.id, adultId: adult?.id ?? null, x: egg.x, y: egg.y, score: this.score });
     }
-    if (!this.hasFieldSpace()) {
+    if (!placement.hasSpace(this.screenCenterPoint())) {
       this.events.push({ type: 'egg-field-filled', eggCount: this.eggs.length });
     }
     return { accepted: true };
@@ -142,6 +147,7 @@ export class GameSimulation {
       return;
     }
     this.elapsed += dt;
+    this.cachedSnapshot = undefined;
     this.layCooldown = Math.max(0, this.layCooldown - dt);
     this.overcrowdedExitCooldown = Math.max(0, this.overcrowdedExitCooldown - dt);
     this.updateEggs(dt);
@@ -194,10 +200,16 @@ export class GameSimulation {
       chick.targetY = target.y;
     }
     this.world = next;
+    this.cachedSlots = undefined;
+    this.cachedSnapshot = undefined;
+  }
+
+  getScore(): number {
+    return this.score;
   }
 
   snapshot(): GameSnapshot {
-    return {
+    return this.cachedSnapshot ??= {
       time: this.elapsed,
       score: this.score,
       world: { width: this.world.width, height: this.world.height },
@@ -240,27 +252,24 @@ export class GameSimulation {
   }
 
   private layingAdults(): InternalAdult[] {
-    return this.adults
-      .filter((adult) => adult.state === 'roaming')
-      .sort((first, second) => first.bornAt - second.bornAt || first.id - second.id);
+    // Adults are appended at birth and removed without changing their order.
+    return this.adults.filter((adult) => adult.state === 'roaming');
   }
 
-  private planAdultEggs(adults: readonly InternalAdult[]): Array<{ adult: InternalAdult; target: Point }> {
+  private planAdultEggs(adults: readonly InternalAdult[], placement: EggPlacement): Array<{ adult: InternalAdult; target: Point }> {
     const plans: Array<{ adult: InternalAdult; target: Point }> = [];
-    const reserved: Point[] = [];
     for (const adult of adults) {
-      const target = this.findEggSlot(this.layingPoint(adult), reserved);
+      const target = placement.reserve(this.layingPoint(adult));
       if (!target) {
         continue;
       }
       plans.push({ adult, target });
-      reserved.push(target);
     }
     return plans;
   }
 
-  private planCentreEgg(): Array<{ adult: undefined; target: Point }> {
-    const target = this.findEggSlot(this.screenCenterPoint());
+  private planCentreEgg(placement: EggPlacement): Array<{ adult: undefined; target: Point }> {
+    const target = placement.reserve(this.screenCenterPoint());
     return target ? [{ adult: undefined, target }] : [];
   }
 
@@ -272,6 +281,7 @@ export class GameSimulation {
   }
 
   private eggSlots(): Point[] {
+    if (this.cachedSlots) return this.cachedSlots;
     const spacing = this.eggSpacing();
     const rowSpacing = spacing * 0.86;
     const slots: Point[] = [];
@@ -283,21 +293,7 @@ export class GameSimulation {
       }
       row += 1;
     }
-    return slots;
-  }
-
-  private findEggSlot(preferred: Point, reserved: readonly Point[] = []): Point | undefined {
-    const slots = this.eggSlots();
-    const spacing = this.eggSpacing();
-    const minimumDistanceSquared = spacing * spacing;
-    const candidates = [preferred, ...slots]
-      .filter((candidate) => candidate.x >= this.world.left && candidate.x <= this.world.right && candidate.y >= this.world.top && candidate.y <= this.world.bottom)
-      .sort((first, second) => distanceSquared(first, preferred) - distanceSquared(second, preferred));
-    return candidates.find((candidate) => this.canPlaceEgg(candidate, minimumDistanceSquared, reserved));
-  }
-
-  private hasFieldSpace(): boolean {
-    return this.findEggSlot(this.screenCenterPoint()) !== undefined;
+    return this.cachedSlots = slots;
   }
 
   private eggSpacing(): number {
@@ -308,11 +304,6 @@ export class GameSimulation {
 
   private visualScaleFor(width: number, height: number): number {
     return clamp(Math.min(width, height) / 720, 0.42, 1);
-  }
-
-  private canPlaceEgg(candidate: Point, minimumDistanceSquared: number, reserved: readonly Point[]): boolean {
-    const occupied = this.eggs.some((egg) => distanceSquared(candidate, { x: egg.targetX, y: egg.targetY }) < minimumDistanceSquared);
-    return !occupied && !reserved.some((point) => distanceSquared(candidate, point) < minimumDistanceSquared);
   }
 
   private updateEggs(dt: number): void {
@@ -546,6 +537,7 @@ export class GameSimulation {
   }
 
   private restart(): void {
+    this.cachedSnapshot = undefined;
     this.eggs.length = 0;
     this.chicks.length = 0;
     this.adults.length = 0;

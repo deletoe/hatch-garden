@@ -1,5 +1,5 @@
 import { assetUrl } from '../game/assets/manifest';
-import { GameController, type ControllerState } from '../game/GameController';
+import { GameController, type UiState } from '../game/GameController';
 
 const get = <T extends HTMLElement>(id: string): T => {
   const element = document.getElementById(id);
@@ -32,6 +32,10 @@ export class GameUi {
   private readonly status = get<HTMLElement>('status-message');
   private readonly fullscreenSupported = document.fullscreenEnabled === true && typeof this.gameShell.requestFullscreen === 'function';
   private wasPaused = false;
+  private lastScore = -1;
+  private lastSoundEnabled: boolean | undefined;
+  private lastPaused: boolean | undefined;
+  private lastFullscreen: boolean | undefined;
 
   constructor(private readonly controller: GameController) {
     this.bind();
@@ -105,17 +109,28 @@ export class GameUi {
       return;
     }
     const active = document.fullscreenElement === this.gameShell;
+    if (active === this.lastFullscreen) return;
+    this.lastFullscreen = active;
     this.fullscreenIcon.src = assetUrl(`ui/fullscreen${active ? '-exit' : ''}.svg`);
     this.fullscreenButton.setAttribute('aria-label', active ? '退出全屏模式' : '进入全屏模式');
   }
 
-  private render(state: ControllerState): void {
-    this.sessionScore.textContent = String(state.snapshot.score).padStart(3, '0');
-    this.soundIcon.src = assetUrl(`ui/sound-${state.settings.soundEnabled ? 'on' : 'off'}.svg`);
-    this.soundButton.setAttribute('aria-label', state.settings.soundEnabled ? '关闭声音' : '开启声音');
+  private render(state: UiState): void {
+    if (state.score !== this.lastScore) {
+      this.lastScore = state.score;
+      this.sessionScore.textContent = String(state.score).padStart(3, '0');
+    }
+    if (state.settings.soundEnabled !== this.lastSoundEnabled) {
+      this.lastSoundEnabled = state.settings.soundEnabled;
+      this.soundIcon.src = assetUrl(`ui/sound-${state.settings.soundEnabled ? 'on' : 'off'}.svg`);
+      this.soundButton.setAttribute('aria-label', state.settings.soundEnabled ? '关闭声音' : '开启声音');
+    }
     this.renderFullscreenControl();
-    this.pauseIcon.src = assetUrl(`ui/${state.paused ? 'play' : 'pause'}.svg`);
-    this.pauseButton.setAttribute('aria-label', state.paused ? '继续游戏' : '暂停游戏');
+    if (state.paused !== this.lastPaused) {
+      this.lastPaused = state.paused;
+      this.pauseIcon.src = assetUrl(`ui/${state.paused ? 'play' : 'pause'}.svg`);
+      this.pauseButton.setAttribute('aria-label', state.paused ? '继续游戏' : '暂停游戏');
+    }
 
     this.pausePanel.hidden = !state.paused || state.pauseReason === 'hidden';
     if (state.pauseReason === 'returning') {

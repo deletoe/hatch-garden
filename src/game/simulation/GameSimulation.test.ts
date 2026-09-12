@@ -25,6 +25,32 @@ const growFlock = (simulation: GameSimulation, eggCount = 25): void => {
 };
 
 describe('GameSimulation', () => {
+  it('reuses unchanged snapshots and invalidates them on every visible state change', () => {
+    const simulation = new GameSimulation(5);
+    const initial = simulation.snapshot();
+    const captured = structuredClone(initial);
+    expect(simulation.snapshot()).toBe(initial);
+    simulation.update(0);
+    expect(simulation.snapshot()).toBe(initial);
+    lay(simulation);
+    const laid = simulation.snapshot();
+    expect(laid).not.toBe(initial);
+    expect(laid.eggs).toHaveLength(1);
+    simulation.update(1 / 60);
+    const advanced = simulation.snapshot();
+    expect(advanced).not.toBe(laid);
+    simulation.setViewport(390, 844);
+    const resized = simulation.snapshot();
+    expect(resized).not.toBe(advanced);
+    simulation.setViewport(390, 844);
+    expect(simulation.snapshot()).toBe(resized);
+    simulation.dispatch({ type: 'RESTART_SESSION' });
+    expect(simulation.snapshot()).not.toBe(resized);
+    expect(simulation.snapshot().score).toBe(0);
+    expect(initial).toEqual(captured);
+    expect(laid.eggs[0].age).toBe(0);
+  });
+
   it('places a new egg at the selected mother hen before looking for another free slot', () => {
     const simulation = new GameSimulation(11);
     const mother = simulation.snapshot().adults[0];

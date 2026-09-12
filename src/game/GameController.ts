@@ -13,7 +13,8 @@ export type ControllerState = {
   storageAvailable: boolean;
 };
 
-type StateListener = (state: ControllerState) => void;
+export type UiState = Omit<ControllerState, 'snapshot'> & { score: number };
+type StateListener = (state: UiState) => void;
 
 export class GameController {
   private readonly simulation = new GameSimulation();
@@ -23,17 +24,16 @@ export class GameController {
   private manualPause = false;
   private hidden = false;
   private waitingForResume = false;
-  private bestWritten = 0;
+  private lastScore = 0;
 
   constructor() {
     const settings = this.settingsStore.snapshot();
-    this.bestWritten = settings.bestSessionEggs;
     this.audio = new AudioController(settings.soundEnabled, settings.volume);
   }
 
   subscribe(listener: StateListener): () => void {
     this.listeners.add(listener);
-    listener(this.state());
+    listener(this.uiState());
     return () => this.listeners.delete(listener);
   }
 
@@ -43,7 +43,6 @@ export class GameController {
     }
     this.audio.unlock();
     const result = this.simulation.dispatch({ type: 'LAY_EGG' });
-    this.publish();
     return result;
   }
 
@@ -65,7 +64,6 @@ export class GameController {
     const events = this.simulation.drainEvents();
     this.playEvents(events);
     this.updateBest();
-    this.publish();
     return events;
   }
 
@@ -108,7 +106,17 @@ export class GameController {
     };
   }
 
-  private isPaused(): boolean {
+  private uiState(): UiState {
+    return {
+      score: this.simulation.getScore(),
+      settings: this.settingsStore.snapshot(),
+      paused: this.isPaused(),
+      pauseReason: this.pauseReason(),
+      storageAvailable: this.settingsStore.isPersistent,
+    };
+  }
+
+  isPaused(): boolean {
     return this.manualPause || this.hidden || this.waitingForResume;
   }
 
@@ -134,31 +142,32 @@ export class GameController {
         this.audio.play('chicken');
       }
     }
+    let hatched = false;
     for (const event of events) {
       if (event.type === 'egg-field-filled') {
         this.audio.playReward();
       }
       if (event.type === 'egg-hatched') {
-        this.audio.play('hatch');
+        hatched = true;
       }
       if (event.type === 'session-restarted') {
         this.audio.play('ui');
       }
     }
+    if (hatched) this.audio.play('hatch');
   }
 
   private updateBest(): void {
-    const score = this.simulation.snapshot().score;
+    const score = this.simulation.getScore();
+    if (score === this.lastScore) return;
+    this.lastScore = score;
     const settings = this.settingsStore.snapshot();
-    if (score <= settings.bestSessionEggs || score === this.bestWritten) {
-      return;
-    }
-    this.bestWritten = score;
-    this.settingsStore.set({ bestSessionEggs: score });
+    if (score > settings.bestSessionEggs) this.settingsStore.set({ bestSessionEggs: score });
+    this.publish();
   }
 
   private publish(): void {
-    const state = this.state();
+    const state = this.uiState();
     for (const listener of this.listeners) {
       listener(state);
     }
