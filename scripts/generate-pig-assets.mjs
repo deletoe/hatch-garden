@@ -14,7 +14,7 @@ for (const [name, label, outfit] of [['peppa', '佩奇', '#EF6873'], ['george', 
 <path d="M85 205 L${leftFoot} ${jump ? 219 : 224} M140 205 L${rightFoot} ${jump ? 219 : 224}" stroke="#E981A6"/>
 <ellipse cx="${leftFoot - 6}" cy="225" rx="16" ry="6" fill="#493954"/><ellipse cx="${rightFoot + 6}" cy="225" rx="16" ry="6" fill="#493954"/>
 <path d="${arms}" stroke="#E981A6"/>
-${name === 'peppa' ? '<path d="M82 140 L142 140 L173 207 Q112 224 51 207Z"' : '<path d="M81 142 L144 142 Q170 165 164 207 Q112 220 59 207 Q53 168 81 142Z"'} fill="${outfit}"/>
+${name === 'peppa' ? '<path d="M82 140 L142 140 L173 207 Q112 224 51 207Z"' : '<ellipse cx="112" cy="176" rx="54" ry="39"'} fill="${outfit}"/>
 <ellipse cx="94" cy="42" rx="10" ry="19" fill="#F8B0CA" stroke="#E981A6" transform="rotate(-15 94 42)"/>
 <ellipse cx="129" cy="41" rx="10" ry="19" fill="#F8B0CA" stroke="#E981A6" transform="rotate(12 129 41)"/>
 <path d="M82 58 C111 40 151 48 170 68 L204 67 C227 66 240 77 237 95 C235 112 219 121 197 116 L171 113 C165 140 140 156 103 153 C62 151 40 130 42 100 C42 81 58 67 82 58Z" fill="#F8B0CA" stroke="#E981A6"/>

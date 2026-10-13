@@ -4,7 +4,7 @@
 <path d="M85 205 L94 224 M140 205 L132 224" stroke="#E981A6"/>
 <ellipse cx="88" cy="225" rx="16" ry="6" fill="#493954"/><ellipse cx="138" cy="225" rx="16" ry="6" fill="#493954"/>
 <path d="M72 161 L34 177 M34 177 l-10 -2 M34 177 l-3 8 M153 162 L193 174 M193 174 l10 -2 M193 174 l3 8" stroke="#E981A6"/>
-<path d="M81 142 L144 142 Q170 165 164 207 Q112 220 59 207 Q53 168 81 142Z" fill="#66B9DF"/>
+<ellipse cx="112" cy="176" rx="54" ry="39" fill="#66B9DF"/>
 <ellipse cx="94" cy="42" rx="10" ry="19" fill="#F8B0CA" stroke="#E981A6" transform="rotate(-15 94 42)"/>
 <ellipse cx="129" cy="41" rx="10" ry="19" fill="#F8B0CA" stroke="#E981A6" transform="rotate(12 129 41)"/>
 <path d="M82 58 C111 40 151 48 170 68 L204 67 C227 66 240 77 237 95 C235 112 219 121 197 116 L171 113 C165 140 140 156 103 153 C62 151 40 130 42 100 C42 81 58 67 82 58Z" fill="#F8B0CA" stroke="#E981A6"/>

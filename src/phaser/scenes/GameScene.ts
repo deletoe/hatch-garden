@@ -215,9 +215,11 @@ export class GameScene extends Phaser.Scene {
       }
       const texture = `${pig.name}.${pig.pose}`;
       if (view.sprite.texture.key !== texture) view.sprite.setTexture(texture);
+      const size = pig.name === 'peppa' ? 0.8 : 0.72;
+      const shadowSize = size / 0.72;
       const jump = pig.state === 'jumping' ? this.jumpHeight(time, index, 36) : 0;
-      view.sprite.setPosition(pig.x, pig.y - jump).setScale(0.72 * this.visualScale).setFlipX(pig.direction < 0).setDepth(pig.y + 12);
-      view.shadow.setPosition(pig.x, pig.y + 3 * this.visualScale).setDisplaySize((122 - jump * 0.9) * this.visualScale, 22 * this.visualScale).setAlpha(pig.state === 'jumping' ? 0.72 : 1).setDepth(pig.y + 8);
+      view.sprite.setPosition(pig.x, pig.y - jump).setScale(size * this.visualScale).setFlipX(pig.direction < 0).setDepth(pig.y + 12);
+      view.shadow.setPosition(pig.x, pig.y + 3 * this.visualScale).setDisplaySize((122 - jump * 0.9) * this.visualScale * shadowSize, 22 * this.visualScale * shadowSize).setAlpha(pig.state === 'jumping' ? 0.72 : 1).setDepth(pig.y + 8);
     }
   }
 

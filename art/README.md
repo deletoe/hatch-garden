@@ -22,7 +22,7 @@
 - 所有角色初始朝右；朝左时围绕逻辑接地锚点水平翻转。
 - 坐标原点在 SVG 左上角，锚点以源文件像素表示。切换姿态不得自动裁剪透明边缘后重新居中，否则会产生抖动。
 - 母鸡锚点 `(128, 228)`，小鸡锚点 `(64, 112)`，蛋锚点 `(48, 104)`。上、下蛋壳仍保留完整蛋的画布和锚点，初始重合后再做破壳位移。
-- 佩奇和乔治画布均为 256 × 256，脚部锚点 `(128, 228)`，姿态 `idle / walk-a / walk-b / jump`，显示缩放 0.72，略大于母鸡的 0.63。泥坑为 360 × 180，中心锚点 `(180, 90)`，按逻辑椭圆半径显示。
+- 佩奇和乔治画布均为 256 × 256，脚部锚点 `(128, 228)`，姿态 `idle / walk-a / walk-b / jump`。乔治为椭圆身体，显示缩放 0.72；佩奇保留红裙造型，显示缩放 0.80，比乔治大约 11%。母鸡缩放为 0.63。泥坑为 360 × 180，中心锚点 `(180, 90)`，按逻辑椭圆半径显示。
 - 母鸡 happy 帧的双脚抬起属于跳跃姿态，仍沿用相同逻辑锚点；不能把每帧最下方可见像素重新吸附到地面。
 - 地面阴影与角色分离，阴影中心锚点 `(64, 16)`；将其中心对齐角色接地位置。跳跃时缩小阴影，不随角色一同抬高。
 - 特效以中心 `(48, 48)` 为锚点，图标以 `(32, 32)` 为中心，背景以 `(0, 0)` 为原点。
@@ -81,7 +81,7 @@
 | `ui.sound-off` | [ui/sound-off.svg](ui/sound-off.svg) | 64 × 64 | 341 |
 | `ui.sound-on` | [ui/sound-on.svg](ui/sound-on.svg) | 64 × 64 | 352 |
 
-原有资源共 **28 个 SVG，17,720 字节（17.7 KB；未压缩）**。新增小猪与泥坑资源如下，合计 14,645 字节，逐文件 gzip 合计约 6.2 KB；完整游戏为 37 个 SVG、32,365 字节。合成稿内嵌了重复图形，不算作游戏必需资源。
+原有资源共 **28 个 SVG，17,720 字节（17.7 KB；未压缩）**。新增小猪与泥坑资源如下，合计 14,513 字节，逐文件 gzip 合计约 6.1 KB；完整游戏为 37 个 SVG、32,233 字节。合成稿内嵌了重复图形，不算作游戏必需资源。
 
 | 资源键 | 文件 | 画布 | 字节 |
 | --- | --- | --- | ---: |
@@ -89,10 +89,10 @@
 | `peppa.walk-a` | [characters/peppa-walk-a.svg](characters/peppa-walk-a.svg) | 256 × 256 | 1751 |
 | `peppa.walk-b` | [characters/peppa-walk-b.svg](characters/peppa-walk-b.svg) | 256 × 256 | 1751 |
 | `peppa.jump` | [characters/peppa-jump.svg](characters/peppa-jump.svg) | 256 × 256 | 1582 |
-| `george.idle` | [characters/george-idle.svg](characters/george-idle.svg) | 256 × 256 | 1772 |
-| `george.walk-a` | [characters/george-walk-a.svg](characters/george-walk-a.svg) | 256 × 256 | 1774 |
-| `george.walk-b` | [characters/george-walk-b.svg](characters/george-walk-b.svg) | 256 × 256 | 1774 |
-| `george.jump` | [characters/george-jump.svg](characters/george-jump.svg) | 256 × 256 | 1605 |
+| `george.idle` | [characters/george-idle.svg](characters/george-idle.svg) | 256 × 256 | 1739 |
+| `george.walk-a` | [characters/george-walk-a.svg](characters/george-walk-a.svg) | 256 × 256 | 1741 |
+| `george.walk-b` | [characters/george-walk-b.svg](characters/george-walk-b.svg) | 256 × 256 | 1741 |
+| `george.jump` | [characters/george-jump.svg](characters/george-jump.svg) | 256 × 256 | 1572 |
 | `mud` | [environment/mud-puddle.svg](environment/mud-puddle.svg) | 360 × 180 | 887 |
 
 ## 设计预览
