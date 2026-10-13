@@ -10,16 +10,16 @@ const seconds = Number(process.argv[2] || 180);
 if (!Number.isFinite(seconds) || seconds <= 0) throw new Error('Duration must be a positive number of seconds');
 const temporary = await mkdtemp(join(tmpdir(), 'hatch-benchmark-'));
 try {
-  for (const name of ['GameSimulation', 'EggPlacement']) {
+  for (const name of ['GameSimulation', 'EggPlacement', 'MudPlay']) {
     let source;
     try { source = await readFile(join(sourceRoot, 'src/game/simulation', `${name}.ts`), 'utf8'); }
     catch (error) {
-      if (name === 'EggPlacement' && error.code === 'ENOENT') continue;
+      if (name !== 'GameSimulation' && error.code === 'ENOENT') continue;
       throw error;
     }
     const output = ts.transpileModule(source, {
       compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 },
-    }).outputText.replace("'./EggPlacement'", "'./EggPlacement.mjs'");
+    }).outputText.replace("'./EggPlacement'", "'./EggPlacement.mjs'").replace("'./MudPlay'", "'./MudPlay.mjs'");
     await writeFile(join(temporary, `${name}.mjs`), output);
   }
   const { GameSimulation } = await import(pathToFileURL(join(temporary, 'GameSimulation.mjs')));

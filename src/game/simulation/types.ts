@@ -3,6 +3,24 @@ export type HenPose = 'idle' | 'blink' | 'walk-a' | 'walk-b' | 'lay' | 'happy';
 export type ChickPose = 'idle' | 'walk-a' | 'walk-b' | 'hatch';
 
 export type AdultState = 'roaming' | 'exiting';
+export type PigName = 'peppa' | 'george';
+export type Pig = {
+  name: PigName;
+  x: number;
+  y: number;
+  direction: -1 | 1;
+  pose: 'idle' | 'walk-a' | 'walk-b' | 'jump';
+  state: 'roaming' | 'running' | 'jumping';
+};
+
+export type MudPuddle = {
+  id: number;
+  x: number;
+  y: number;
+  radiusX: number;
+  radiusY: number;
+  activatedAt: number | null;
+};
 
 export type Adult = {
   id: number;
@@ -12,6 +30,7 @@ export type Adult = {
   pose: HenPose;
   age: number;
   state: AdultState;
+  jumping: boolean;
 };
 
 export type Egg = {
@@ -32,6 +51,7 @@ export type Chick = {
   direction: -1 | 1;
   pose: ChickPose;
   age: number;
+  jumping: boolean;
 };
 
 export type WorldSize = { width: number; height: number };
@@ -43,6 +63,8 @@ export type GameSnapshot = {
   adults: readonly Adult[];
   eggs: readonly Egg[];
   chicks: readonly Chick[];
+  pigs: readonly Pig[];
+  puddle: MudPuddle | null;
 };
 
 export type GameAction = { type: 'LAY_EGG' } | { type: 'RESTART_SESSION' };

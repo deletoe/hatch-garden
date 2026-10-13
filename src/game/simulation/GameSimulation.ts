@@ -1,4 +1,5 @@
 import { EggPlacement } from './EggPlacement';
+import { MudPlay } from './MudPlay';
 import type {
   Adult,
   Chick,
@@ -79,6 +80,7 @@ const distanceSquared = (first: Point, second: Point): number => {
 
 export class GameSimulation {
   private readonly random: SeededRandom;
+  private readonly mudPlay: MudPlay;
   private readonly eggs: InternalEgg[] = [];
   private readonly chicks: InternalChick[] = [];
   private readonly adults: InternalAdult[] = [];
@@ -96,6 +98,7 @@ export class GameSimulation {
 
   constructor(seed = 0x51c3d) {
     this.random = new SeededRandom(seed);
+    this.mudPlay = new MudPlay(this.world, seed);
     this.adults.push(this.createAdult(this.world.width / 2, this.world.top + (this.world.bottom - this.world.top) * 0.48));
   }
 
@@ -150,6 +153,7 @@ export class GameSimulation {
     this.cachedSnapshot = undefined;
     this.layCooldown = Math.max(0, this.layCooldown - dt);
     this.overcrowdedExitCooldown = Math.max(0, this.overcrowdedExitCooldown - dt);
+    this.mudPlay.update(dt, this.elapsed);
     this.updateEggs(dt);
     this.updateChicks(dt);
     this.updateAdults(dt);
@@ -170,9 +174,17 @@ export class GameSimulation {
       y: this.remapUnclamped(point.y, previous.entityTop, previous.entityBottom, next.entityTop, next.entityBottom),
     });
 
+    const oldPuddle = this.mudPlay.snapshot().puddle;
+    this.mudPlay.setViewport(next);
+    const newPuddle = this.mudPlay.snapshot().puddle;
+    const remapJumper = (point: Point): Point => oldPuddle && newPuddle ? {
+      x: newPuddle.x + (point.x - oldPuddle.x) / oldPuddle.radiusX * newPuddle.radiusX,
+      y: newPuddle.y + (point.y - oldPuddle.y) / oldPuddle.radiusY * newPuddle.radiusY,
+    } : remapInside(point);
+
     for (const adult of this.adults) {
       const useEntityBounds = adult.state === 'exiting' || adult.escapeTarget;
-      const position = useEntityBounds ? remapEntity(adult) : remapInside(adult);
+      const position = adult.jumping ? remapJumper(adult) : useEntityBounds ? remapEntity(adult) : remapInside(adult);
       const target = useEntityBounds
         ? remapEntity({ x: adult.targetX, y: adult.targetY })
         : remapInside({ x: adult.targetX, y: adult.targetY });
@@ -190,7 +202,7 @@ export class GameSimulation {
       egg.targetY = target.y;
     }
     for (const chick of this.chicks) {
-      const position = chick.escapeTarget ? remapEntity(chick) : remapInside(chick);
+      const position = chick.jumping ? remapJumper(chick) : chick.escapeTarget ? remapEntity(chick) : remapInside(chick);
       const target = chick.escapeTarget
         ? remapEntity({ x: chick.targetX, y: chick.targetY })
         : remapInside({ x: chick.targetX, y: chick.targetY });
@@ -213,9 +225,10 @@ export class GameSimulation {
       time: this.elapsed,
       score: this.score,
       world: { width: this.world.width, height: this.world.height },
-      adults: this.adults.map(({ id, x, y, direction, pose, age, state }) => ({ id, x, y, direction, pose, age, state })),
+      adults: this.adults.map(({ id, x, y, direction, pose, age, state, jumping }) => ({ id, x, y, direction, pose, age, state, jumping })),
       eggs: this.eggs.map(({ id, x, y, targetX, targetY, state, age, sourceAdultId }) => ({ id, x, y, targetX, targetY, state, age, sourceAdultId })),
-      chicks: this.chicks.map(({ id, x, y, direction, pose, age }) => ({ id, x, y, direction, pose, age })),
+      chicks: this.chicks.map(({ id, x, y, direction, pose, age, jumping }) => ({ id, x, y, direction, pose, age, jumping })),
+      ...this.mudPlay.snapshot(),
     };
   }
 
@@ -245,7 +258,7 @@ export class GameSimulation {
     return {
       id: this.nextId++, x, y,
       direction: this.random.next() > 0.5 ? 1 : -1,
-      pose: 'idle', age: 0, state: 'roaming', bornAt: this.elapsed,
+      pose: 'idle', age: 0, state: 'roaming', bornAt: this.elapsed, jumping: false,
       speed: this.random.between(46, 64), targetX: target.x, targetY: target.y,
       escapeTarget: target.escapeTarget, blinkClock: this.random.between(1.8, 4.4), layClock: 0,
     };
@@ -253,7 +266,7 @@ export class GameSimulation {
 
   private layingAdults(): InternalAdult[] {
     // Adults are appended at birth and removed without changing their order.
-    return this.adults.filter((adult) => adult.state === 'roaming');
+    return this.adults.filter((adult) => adult.state === 'roaming' || adult.jumping);
   }
 
   private planAdultEggs(adults: readonly InternalAdult[], placement: EggPlacement): Array<{ adult: InternalAdult; target: Point }> {
@@ -326,9 +339,11 @@ export class GameSimulation {
       const chick = this.chicks[index];
       chick.age += dt;
       chick.hatchClock = Math.max(0, chick.hatchClock - dt);
+      this.updateMudParticipation(chick);
       if (chick.age >= CHICK_GROW_AT) {
         this.chicks.splice(index, 1);
         const adult = this.createAdult(chick.x, chick.y);
+        adult.jumping = chick.jumping;
         this.adults.push(adult);
         this.events.push({ type: 'chick-matured', chickId: chick.id, adultId: adult.id, x: chick.x, y: chick.y });
         continue;
@@ -337,6 +352,7 @@ export class GameSimulation {
         chick.pose = 'hatch';
         continue;
       }
+      if (chick.jumping) { chick.pose = 'idle'; continue; }
       if (distanceSquared(chick, { x: chick.targetX, y: chick.targetY }) < 14 * 14) {
         const target = this.randomWanderTarget(chick);
         chick.targetX = target.x;
@@ -360,7 +376,7 @@ export class GameSimulation {
     return {
       id: this.nextId++, x, y,
       direction: this.random.next() > 0.5 ? 1 : -1,
-      pose: 'hatch', age: 0, speed: this.random.between(25, 43),
+      pose: 'hatch', age: 0, jumping: false, speed: this.random.between(25, 43),
       targetX: target.x, targetY: target.y, hatchClock: 0.3, escapeTarget: target.escapeTarget,
     };
   }
@@ -368,6 +384,7 @@ export class GameSimulation {
   private updateAdults(dt: number): void {
     for (const adult of this.adults) {
       adult.age = this.elapsed - adult.bornAt;
+      this.updateMudParticipation(adult);
     }
     if (!this.scheduleOvercrowdedAdultExit()) {
       this.scheduleIdleAdultExits();
@@ -376,6 +393,7 @@ export class GameSimulation {
     for (let index = this.adults.length - 1; index >= 0; index -= 1) {
       const adult = this.adults[index];
       adult.layClock = Math.max(0, adult.layClock - dt);
+      if (adult.jumping) { adult.pose = adult.layClock > 0 ? 'lay' : 'happy'; continue; }
       if (adult.state === 'exiting') {
         this.moveToward(adult, adult.targetX, adult.targetY, adult.speed * 1.55, dt);
         adult.pose = Math.floor(this.elapsed * 4.1) % 2 === 0 ? 'walk-a' : 'walk-b';
@@ -417,7 +435,7 @@ export class GameSimulation {
       ? 0
       : 1 + Math.floor((idleFor - IDLE_EXIT_FIRST_AFTER) / IDLE_EXIT_INTERVAL);
     while (this.completedIdleExitWaves < dueWaves) {
-      const roaming = this.layingAdults();
+      const roaming = this.exitCandidates();
       const leavingCount = Math.floor(roaming.length / 2);
       for (const adult of roaming.slice(0, leavingCount)) {
         this.startExit(adult, 'idle');
@@ -430,7 +448,7 @@ export class GameSimulation {
     if (this.overcrowdedExitCooldown > 0) {
       return false;
     }
-    const roaming = this.layingAdults();
+    const roaming = this.exitCandidates();
     // This is the current screen's approximate one-press fill count. It is
     // regenerated on every resize, so the pressure threshold follows the view.
     const fieldFillingFlockSize = this.eggSlots().length;
@@ -450,6 +468,21 @@ export class GameSimulation {
     adult.targetX = target.x;
     adult.targetY = target.y;
     this.events.push({ type: 'adult-exiting', adultId: adult.id, targetX: adult.targetX, targetY: adult.targetY, reason });
+  }
+
+  private exitCandidates(): InternalAdult[] {
+    return this.adults.filter((adult) => adult.state === 'roaming' && !adult.jumping);
+  }
+
+  private updateMudParticipation(entity: InternalAdult | InternalChick): void {
+    const jumping = this.mudPlay.isPlayingAt(entity);
+    if (entity.jumping && !jumping && !('state' in entity && entity.state === 'exiting')) {
+      const target = this.randomWanderTarget(entity);
+      entity.targetX = target.x;
+      entity.targetY = target.y;
+      entity.escapeTarget = target.escapeTarget;
+    }
+    entity.jumping = jumping;
   }
 
   private randomExitPoint(): Point {
@@ -543,6 +576,7 @@ export class GameSimulation {
     this.adults.length = 0;
     this.score = 0;
     this.elapsed = 0;
+    this.mudPlay.restart(this.elapsed);
     this.layCooldown = 0;
     this.lastLayOperationAt = 0;
     this.completedIdleExitWaves = 0;

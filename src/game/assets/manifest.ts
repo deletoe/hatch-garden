@@ -12,6 +12,11 @@ export const assetUrl = (path: string): string => `${baseUrl}${path}`;
 export const vectorAssets: readonly VectorAsset[] = [
   { key: 'field', path: 'environment/lilac-field.svg', width: 1600, height: 1000 },
   { key: 'shadow', path: 'environment/shadow.svg', width: 128, height: 32 },
+  { key: 'mud', path: 'environment/mud-puddle.svg', width: 360, height: 180 },
+  ...(['peppa', 'george'] as const).flatMap((name) =>
+    (['idle', 'walk-a', 'walk-b', 'jump'] as const).map((pose) => ({
+      key: `${name}.${pose}`, path: `characters/${name}-${pose}.svg`, width: 256, height: 256,
+    }))),
   { key: 'hen.idle', path: 'characters/hen-idle.svg', width: 256, height: 256 },
   { key: 'hen.blink', path: 'characters/hen-blink.svg', width: 256, height: 256 },
   { key: 'hen.walk-a', path: 'characters/hen-walk-a.svg', width: 256, height: 256 },

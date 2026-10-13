@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { GameController } from '../../game/GameController';
-import type { Adult, Chick, Egg, GameEvent, GameSnapshot } from '../../game/simulation/types';
+import type { Adult, Chick, Egg, GameEvent, GameSnapshot, MudPuddle, Pig, PigName } from '../../game/simulation/types';
 
 const STEP = 1 / 60;
 const MAX_STEPS_PER_FRAME = 5;
@@ -15,10 +15,14 @@ const clamp = (value: number, min: number, max: number): number => Math.max(min,
 export class GameScene extends Phaser.Scene {
   private accumulator = 0;
   private field!: Phaser.GameObjects.Image;
+  private mud!: Phaser.GameObjects.Image;
+  private mudRipples: Phaser.GameObjects.Ellipse[] = [];
+  private mudDrops: Phaser.GameObjects.Ellipse[] = [];
   private visualScale = 1;
   private readonly adults = new Map<number, EntityView>();
   private readonly eggs = new Map<number, EntityView>();
   private readonly chicks = new Map<number, EntityView>();
+  private readonly pigs = new Map<PigName, EntityView>();
   private readonly effects = new Set<Phaser.GameObjects.GameObject>();
   private celebrating = false;
   private paused = false;
@@ -30,6 +34,9 @@ export class GameScene extends Phaser.Scene {
 
   create(): void {
     this.field = this.add.image(0, 0, 'field').setOrigin(0).setDepth(0);
+    this.mud = this.add.image(0, 0, 'mud').setDepth(1).setVisible(false);
+    this.mudRipples = Array.from({ length: 2 }, () => this.add.ellipse(0, 0, 200, 100).setSmoothness(40).setStrokeStyle(2, 0xe0ad86).setDepth(2).setVisible(false));
+    this.mudDrops = Array.from({ length: 8 }, () => this.add.ellipse(0, 0, 9, 13, 0x95644f).setVisible(false));
     this.input.on('pointerdown', () => this.controller.layEgg());
     this.scale.on(Phaser.Scale.Events.RESIZE, this.layout, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.scale.off(Phaser.Scale.Events.RESIZE, this.layout, this));
@@ -105,26 +112,53 @@ export class GameScene extends Phaser.Scene {
   }
 
   private sync(snapshot: GameSnapshot): void {
-    this.syncAdults(snapshot.adults);
+    this.syncMud(snapshot.puddle, snapshot.time);
+    this.syncAdults(snapshot.adults, snapshot.time);
     this.syncEggs(snapshot.eggs);
-    this.syncChicks(snapshot.chicks);
+    this.syncChicks(snapshot.chicks, snapshot.time);
+    this.syncPigs(snapshot.pigs, snapshot.time);
   }
 
-  private syncAdults(adults: readonly Adult[]): void {
+  private jumpHeight(time: number, phase: number, height: number): number {
+    return Math.max(0, Math.sin(time * Math.PI * 3.2 + phase * 1.7)) * height * this.visualScale;
+  }
+
+  private syncMud(puddle: MudPuddle | null, time: number): void {
+    this.mud.setVisible(puddle !== null);
+    const active = puddle !== null && puddle.activatedAt !== null;
+    for (const effect of [...this.mudRipples, ...this.mudDrops]) effect.setVisible(active);
+    if (!puddle) return;
+    this.mud.setPosition(puddle.x, puddle.y).setDisplaySize(puddle.radiusX * 2, puddle.radiusY * 2);
+    if (!active) return;
+    for (const [index, ripple] of this.mudRipples.entries()) {
+      const progress = ((time - puddle.activatedAt!) * 1.6 + index * 0.5) % 1;
+      ripple.setPosition(puddle.x, puddle.y).setDisplaySize(puddle.radiusX * (0.5 + progress), puddle.radiusY * (0.4 + progress)).setAlpha((1 - progress) * 0.6);
+    }
+    for (const [index, drop] of this.mudDrops.entries()) {
+      const progress = ((time - puddle.activatedAt!) * 1.6 + index / this.mudDrops.length) % 1;
+      const side = index % 2 === 0 ? -1 : 1;
+      drop.setPosition(puddle.x + side * puddle.radiusX * (0.12 + progress * 0.65), puddle.y + (index % 3 - 1) * puddle.radiusY * 0.3 - Math.sin(progress * Math.PI) * 42 * this.visualScale)
+        .setScale(this.visualScale * (1 - progress * 0.5)).setAlpha(1 - progress).setDepth(puddle.y + 3).setAngle(side * progress * 70);
+    }
+  }
+
+  private syncAdults(adults: readonly Adult[], time: number): void {
     const active = new Set(adults.map((adult) => adult.id));
     this.removeMissing(this.adults, active);
     for (const adult of adults) {
       const view = this.adults.get(adult.id) ?? this.createAdultView(adult);
       const texture = `hen.${adult.pose}`;
+      const jump = adult.jumping ? this.jumpHeight(time, adult.id, 30) : 0;
       if (view.sprite.texture.key !== texture) view.sprite.setTexture(texture);
       view.sprite
-        .setPosition(adult.x, adult.y)
+        .setPosition(adult.x, adult.y - jump)
         .setScale(0.63 * this.visualScale)
         .setFlipX(adult.direction < 0)
         .setDepth(adult.y + 10);
       view.shadow
         .setPosition(adult.x, adult.y + 16 * this.visualScale)
-        .setDisplaySize(118 * this.visualScale, 24 * this.visualScale)
+        .setDisplaySize((118 - jump * 0.8) * this.visualScale, 24 * this.visualScale)
+        .setAlpha(adult.jumping ? 0.72 : 1)
         .setDepth(adult.y + 8);
     }
   }
@@ -148,22 +182,42 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private syncChicks(chicks: readonly Chick[]): void {
+  private syncChicks(chicks: readonly Chick[], time: number): void {
     const active = new Set(chicks.map((chick) => chick.id));
     this.removeMissing(this.chicks, active);
     for (const chick of chicks) {
       const view = this.chicks.get(chick.id) ?? this.createChickView(chick);
       const texture = `chick.${chick.pose}`;
+      const jump = chick.jumping ? this.jumpHeight(time, chick.id, 23) : 0;
       if (view.sprite.texture.key !== texture) view.sprite.setTexture(texture);
       view.sprite
-        .setPosition(chick.x, chick.y)
+        .setPosition(chick.x, chick.y - jump)
         .setScale(0.76 * this.visualScale)
         .setFlipX(chick.direction < 0)
         .setDepth(chick.y + 7);
       view.shadow
         .setPosition(chick.x, chick.y + 3 * this.visualScale)
-        .setDisplaySize(48 * this.visualScale, 10 * this.visualScale)
+        .setDisplaySize((48 - jump * 0.4) * this.visualScale, 10 * this.visualScale)
+        .setAlpha(chick.jumping ? 0.72 : 1)
         .setDepth(chick.y + 5);
+    }
+  }
+
+  private syncPigs(pigs: readonly Pig[], time: number): void {
+    for (const [index, pig] of pigs.entries()) {
+      let view = this.pigs.get(pig.name);
+      if (!view) {
+        view = {
+          sprite: this.add.image(pig.x, pig.y, `${pig.name}.idle`).setOrigin(0.5, 228 / 256),
+          shadow: this.add.image(pig.x, pig.y, 'shadow'),
+        };
+        this.pigs.set(pig.name, view);
+      }
+      const texture = `${pig.name}.${pig.pose}`;
+      if (view.sprite.texture.key !== texture) view.sprite.setTexture(texture);
+      const jump = pig.state === 'jumping' ? this.jumpHeight(time, index, 36) : 0;
+      view.sprite.setPosition(pig.x, pig.y - jump).setScale(0.72 * this.visualScale).setFlipX(pig.direction < 0).setDepth(pig.y + 12);
+      view.shadow.setPosition(pig.x, pig.y + 3 * this.visualScale).setDisplaySize((122 - jump * 0.9) * this.visualScale, 22 * this.visualScale).setAlpha(pig.state === 'jumping' ? 0.72 : 1).setDepth(pig.y + 8);
     }
   }
 

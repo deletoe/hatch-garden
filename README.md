@@ -8,12 +8,14 @@ A small, static browser game about filling a garden with eggs, watching chicks h
 
 - One click or Space makes all eligible hens lay together, reserving non-overlapping egg spaces before creating the batch.
 - Eggs crack and hatch after 5.46 seconds; chicks wander, mature, and may leave the outer play boundary.
+- Peppa and George wander around the garden. When one discovers a mud puddle, the other runs over; nearby chickens join the jumping party for 20 seconds, then a new puddle appears after 5 seconds.
 - Responsive full-viewport playfield, pause controls, sound controls, and an automatic fullscreen toggle where the browser supports it.
 - A local-only best score and settings store. There is no account, API, telemetry, game server, database, or WebSocket.
 - SVG artwork, short sound effects, and a 24-second looping background track that loads only after the first egg.
 
 - 点击场地或按空格，会让所有可下蛋的母鸡同步下蛋；系统先预留不重叠的蛋位，再同帧生成。
 - 蛋会在 5.46 秒后破壳；小鸡随机散步、成长为母鸡，也可能走出外圈。
+- 佩奇和乔治也会散步；一只小猪发现泥坑后会叫另一只跑来，鸡走进正在玩耍的泥坑也一起跳。20 秒后散场，5 秒后出现新泥坑；跳跃不影响成长和下蛋。
 - 游戏区域随视口填充，包含暂停、声音控制和在浏览器支持时自动显示的全屏切换。
 - 最高分和设置仅保存在本机。没有账号、API、遥测、游戏服务器、数据库或 WebSocket。
 - 美术使用 SVG；背景音乐是第一次下蛋后才请求的 24 秒循环片段。
@@ -50,5 +52,7 @@ Upload the contents of `dist/` to any HTTPS static host such as Nginx, Caddy, Gi
 ## License / 许可证
 
 The original code, documentation, and SVG artwork are available under the [MIT License](LICENSE). Third-party audio is not covered by that grant; see [NOTICE.md](NOTICE.md) and the audio notices for each asset’s terms and required attribution.
+The fan-drawn Peppa and George SVGs do not grant rights to the underlying third-party characters or names; see [NOTICE.md](NOTICE.md).
 
 项目的原创代码、文档和 SVG 美术采用 [MIT License](LICENSE)。第三方音频不包含在 MIT 授权内；请查阅 [NOTICE.md](NOTICE.md) 以及每个音频资源的来源、许可与署名说明。
+佩奇和乔治 SVG 为重新绘制的同人形象；仓库授权不包含第三方角色及名称的权利，详见 [NOTICE.md](NOTICE.md)。
