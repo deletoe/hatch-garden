@@ -15,7 +15,7 @@ export const vectorAssets: readonly VectorAsset[] = [
   { key: 'mud', path: 'environment/mud-puddle.svg', width: 360, height: 180 },
   ...(['peppa', 'george'] as const).flatMap((name) =>
     (['idle', 'walk-a', 'walk-b', 'jump'] as const).map((pose) => ({
-      key: `${name}.${pose}`, path: `characters/${name}-${pose}.svg${name === 'george' ? '?v=2' : ''}`, width: 256, height: 256,
+      key: `${name}.${pose}`, path: `characters/${name}-${pose}.svg`, width: 256, height: 256,
     }))),
   { key: 'hen.idle', path: 'characters/hen-idle.svg', width: 256, height: 256 },
   { key: 'hen.blink', path: 'characters/hen-blink.svg', width: 256, height: 256 },
@@ -35,7 +35,9 @@ export const vectorAssets: readonly VectorAsset[] = [
   { key: 'fx.star', path: 'fx/star.svg', width: 96, height: 96 },
   { key: 'fx.puff', path: 'fx/puff.svg', width: 96, height: 96 },
   { key: 'fx.heart', path: 'fx/heart.svg', width: 96, height: 96 },
-];
+].map((asset) => /^(characters|eggs)\//.test(asset.path)
+  ? { ...asset, path: `${asset.path}?v=reference-3` }
+  : asset);
 
 export const audioAssets = {
   background: assetUrl('audio/happy-garden.mp3'),

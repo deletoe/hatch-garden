@@ -1,15 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none"><title>乔治 · walk-a</title>
-<g stroke="#493954" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
-<path d="M68 174 C39 167 25 157 28 148 C31 141 44 144 43 152 C42 160 31 161 27 156" stroke="#E981A6"/>
-<path d="M85 205 L94 224 M140 205 L132 224" stroke="#E981A6"/>
-<ellipse cx="88" cy="225" rx="16" ry="6" fill="#493954"/><ellipse cx="138" cy="225" rx="16" ry="6" fill="#493954"/>
-<path d="M72 161 L34 177 M34 177 l-10 -2 M34 177 l-3 8 M153 162 L193 174 M193 174 l10 -2 M193 174 l3 8" stroke="#E981A6"/>
-<ellipse cx="112" cy="176" rx="54" ry="39" fill="#66B9DF"/>
-<ellipse cx="94" cy="42" rx="10" ry="19" fill="#F8B0CA" stroke="#E981A6" transform="rotate(-15 94 42)"/>
-<ellipse cx="129" cy="41" rx="10" ry="19" fill="#F8B0CA" stroke="#E981A6" transform="rotate(12 129 41)"/>
-<path d="M82 58 C111 40 151 48 170 68 L204 67 C227 66 240 77 237 95 C235 112 219 121 197 116 L171 113 C165 140 140 156 103 153 C62 151 40 130 42 100 C42 81 58 67 82 58Z" fill="#F8B0CA" stroke="#E981A6"/>
-<ellipse cx="215" cy="89" rx="21" ry="22" fill="#FFC4D8" stroke="#E981A6"/>
-<circle cx="209" cy="86" r="3.5" fill="#D86996" stroke="none"/><circle cx="223" cy="91" r="3.5" fill="#D86996" stroke="none"/>
-<ellipse cx="92" cy="121" rx="15" ry="13" fill="#EF8CB3" stroke="none"/>
-<circle cx="133" cy="79" r="8" fill="#FFF9EC" stroke="#E981A6" stroke-width="4"/><circle cx="164" cy="80" r="8" fill="#FFF9EC" stroke="#E981A6" stroke-width="4"/><circle cx="135" cy="79" r="3" fill="#493954" stroke="none"/><circle cx="166" cy="80" r="3" fill="#493954" stroke="none"/><path d="M123 117 Q141 135 160 117" stroke="#D86996" stroke-width="4.5"/>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M86 184 C66 187 59 179 63 170 C67 162 78 170 72 177 C69 181 60 180 59 173" stroke="#FEB8E2" stroke-width="5"/>
+<path d="M104 205 L112 226 M155 205 L144 226" stroke="#FEB8E2" stroke-width="5"/>
+<ellipse cx="117" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/><ellipse cx="149" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/>
+<path d="M107 149 L67 159 M67 159 l-12 -2 M67 159 l-6 -11 M67 159 l-11 6 M179 149 L219 159 M219 159 l12 -2 M219 159 l6 -11 M219 159 l11 6" stroke="#FEB8E2" stroke-width="5"/>
+<ellipse cx="131" cy="166" rx="58" ry="42" fill="#6497DA" stroke="#4283BF" stroke-width="4"/>
+<g transform="matrix(-.5 0 0 .5 485 -145)" stroke="#E991C6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+<path d="M706 386 C700 365 704 344 714 336 C725 328 736 337 734 352 C734 369 725 383 718 393Z" fill="#FEB8E2"/>
+<path d="M757 395 C755 379 771 355 784 355 C799 351 805 366 796 383 L779 405Z" fill="#FEB8E2"/>
+<path d="M565 348 C596 347 650 357 690 372 C730 384 770 409 792 438 C813 465 820 499 811 530 C801 568 770 589 732 593 C690 599 641 586 616 563 C592 542 588 516 602 490 C572 483 549 470 534 455 C516 440 509 416 513 393 C517 371 536 350 565 348Z" fill="#FEB8E2"/>
+<path d="M565 348 C532 346 509 379 513 411 C516 439 532 455 552 454 C578 452 598 429 598 400 C598 376 581 354 565 348Z" fill="#FEB8E2"/>
+<circle cx="540" cy="396" r="9" fill="#C86CA4" stroke="none"/><circle cx="567" cy="405" r="9" fill="#C86CA4" stroke="none"/>
+<circle cx="660" cy="400" r="21" fill="#FFF" stroke-width="8"/><circle cx="714" cy="430" r="21" fill="#FFF" stroke-width="8"/>
+<circle cx="659" cy="399" r="9" fill="#000" stroke="none"/><circle cx="713" cy="430" r="9" fill="#000" stroke="none"/>
+<circle cx="752" cy="510" r="32" fill="#FF8CD1" stroke="none"/>
+<path d="M622 512 C625 535 650 548 676 528" fill="none" stroke="#BE659A" stroke-width="10"/>
+</g>
 </g></svg>

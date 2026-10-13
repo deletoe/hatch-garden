@@ -1,15 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none"><title>佩奇 · jump</title>
-<g stroke="#493954" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
-<path d="M68 174 C39 167 25 157 28 148 C31 141 44 144 43 152 C42 160 31 161 27 156" stroke="#E981A6"/>
-<path d="M85 205 L84 219 M140 205 L142 219" stroke="#E981A6"/>
-<ellipse cx="78" cy="225" rx="16" ry="6" fill="#493954"/><ellipse cx="148" cy="225" rx="16" ry="6" fill="#493954"/>
-<path d="M73 155 L43 132 M43 132 L34 130 M43 132 L41 121 M151 157 L181 133 M181 133 L190 132 M181 133 L185 122" stroke="#E981A6"/>
-<path d="M82 140 L142 140 L173 207 Q112 224 51 207Z" fill="#EF6873"/>
-<ellipse cx="94" cy="42" rx="10" ry="19" fill="#F8B0CA" stroke="#E981A6" transform="rotate(-15 94 42)"/>
-<ellipse cx="129" cy="41" rx="10" ry="19" fill="#F8B0CA" stroke="#E981A6" transform="rotate(12 129 41)"/>
-<path d="M82 58 C111 40 151 48 170 68 L204 67 C227 66 240 77 237 95 C235 112 219 121 197 116 L171 113 C165 140 140 156 103 153 C62 151 40 130 42 100 C42 81 58 67 82 58Z" fill="#F8B0CA" stroke="#E981A6"/>
-<ellipse cx="215" cy="89" rx="21" ry="22" fill="#FFC4D8" stroke="#E981A6"/>
-<circle cx="209" cy="86" r="3.5" fill="#D86996" stroke="none"/><circle cx="223" cy="91" r="3.5" fill="#D86996" stroke="none"/>
-<ellipse cx="92" cy="121" rx="15" ry="13" fill="#EF8CB3" stroke="none"/>
-<path d="M126 79 Q133 69 139 79 M156 80 Q163 71 170 80" stroke="#493954" stroke-width="4.5"/><path d="M122 116 Q141 145 164 115Z" fill="#CB6989" stroke="#D86996" stroke-width="4.5"/>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M86 184 C66 187 59 179 63 170 C67 162 78 170 72 177 C69 181 60 180 59 173" stroke="#F4C0D8" stroke-width="5"/>
+<path d="M104 205 L102 226 M155 205 L154 226" stroke="#F4C0D8" stroke-width="5"/>
+<ellipse cx="107" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/><ellipse cx="159" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/>
+<path d="M106 146 L74 123 M74 123 L62 120 M74 123 L69 112 M74 123 L61 129 M180 146 L209 120 M209 120 L219 115 M209 120 L206 109 M209 120 L220 123" stroke="#F4C0D8" stroke-width="5"/>
+<path d="M117 122 C104 143 91 173 82 208 Q141 211 202 208 C192 175 179 144 168 122Z" fill="#F16465" stroke="#E8414B" stroke-width="4"/>
+<g transform="matrix(-.42 0 0 .42 409.3 -95.92)" stroke="#EB99C1" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+<path d="M628 333 C618 318 626 290 640 282 C652 275 666 281 666 296 C666 313 656 330 646 340Z" fill="#F4C0D8"/>
+<path d="M674 348 C669 335 687 310 701 311 C716 307 725 318 720 332 C714 348 704 359 694 369Z" fill="#F4C0D8"/>
+<path d="M515 311 C551 312 613 324 659 343 C686 356 711 376 723 404 C735 432 736 465 723 493 C704 536 663 555 619 552 C573 550 540 535 529 507 C521 485 523 453 538 429 C511 420 486 408 474 389 C460 370 457 350 466 333 C476 319 492 308 515 311Z" fill="#F4C0D8"/>
+<path d="M515 311 C482 305 458 327 464 355 C469 378 487 393 508 389 C525 386 538 366 537 345 C537 329 529 316 515 311Z" fill="#F4C0D8" stroke-width="8"/>
+<circle cx="491" cy="346" r="7" fill="#BE719E" stroke="none"/><circle cx="512" cy="351" r="7" fill="#BE719E" stroke="none"/>
+<circle cx="583" cy="350" r="19" fill="#FFF" stroke-width="7"/><circle cx="635" cy="373" r="20" fill="#FFF" stroke-width="7"/>
+<circle cx="588" cy="351" r="8" fill="#1D1D1B" stroke="none"/><circle cx="640" cy="374" r="8" fill="#1D1D1B" stroke="none"/>
+<ellipse cx="682" cy="448" rx="29" ry="31" fill="#F4A1C5" stroke="none"/>
+<path d="M555 457 C576 463 610 466 638 458 C635 489 615 504 594 498 C571 494 557 479 555 457Z" fill="#1D1D1B" stroke="#EE4F8F" stroke-width="5"/><path d="M576 490 Q595 477 619 489 Q607 503 594 498 Q583 497 576 490Z" fill="#EE4F8F" stroke="none"/>
+</g>
 </g></svg>

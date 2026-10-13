@@ -1,0 +1,225 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="1300" viewBox="0 0 1320 1300" font-family="PingFang SC,Microsoft YaHei,sans-serif"><rect width="1320" height="1300" fill="#F7F4ED"/><text x="45" y="58" font-size="30" font-weight="bold" fill="#493954">参考重绘 · SVG 美术资源</text><text x="45" y="91" font-size="16" fill="#776B80">按游戏比例与脚部锚点展示；佩奇头部后移，乔治整体略小，不带助听器。</text><text x="38" y="218" font-size="20" fill="#493954">佩奇</text><rect x="170" y="125" width="172" height="205" rx="16" fill="#FFF"/><svg x="156.928" y="124.52799999999999" width="198.144" height="198.144" viewBox="0 0 256 256" fill="none"><title>佩奇 · idle</title>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M86 184 C66 187 59 179 63 170 C67 162 78 170 72 177 C69 181 60 180 59 173" stroke="#F4C0D8" stroke-width="5"/>
+<path d="M104 205 L102 226 M155 205 L154 226" stroke="#F4C0D8" stroke-width="5"/>
+<ellipse cx="107" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/><ellipse cx="159" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/>
+<path d="M107 149 L77 159 M77 159 l-12 -2 M77 159 l-6 -11 M77 159 l-11 6 M179 149 L209 159 M209 159 l12 -2 M209 159 l6 -11 M209 159 l11 6" stroke="#F4C0D8" stroke-width="5"/>
+<path d="M117 122 C104 143 91 173 82 208 Q141 211 202 208 C192 175 179 144 168 122Z" fill="#F16465" stroke="#E8414B" stroke-width="4"/>
+<g transform="matrix(-.42 0 0 .42 409.3 -95.92)" stroke="#EB99C1" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+<path d="M628 333 C618 318 626 290 640 282 C652 275 666 281 666 296 C666 313 656 330 646 340Z" fill="#F4C0D8"/>
+<path d="M674 348 C669 335 687 310 701 311 C716 307 725 318 720 332 C714 348 704 359 694 369Z" fill="#F4C0D8"/>
+<path d="M515 311 C551 312 613 324 659 343 C686 356 711 376 723 404 C735 432 736 465 723 493 C704 536 663 555 619 552 C573 550 540 535 529 507 C521 485 523 453 538 429 C511 420 486 408 474 389 C460 370 457 350 466 333 C476 319 492 308 515 311Z" fill="#F4C0D8"/>
+<path d="M515 311 C482 305 458 327 464 355 C469 378 487 393 508 389 C525 386 538 366 537 345 C537 329 529 316 515 311Z" fill="#F4C0D8" stroke-width="8"/>
+<circle cx="491" cy="346" r="7" fill="#BE719E" stroke="none"/><circle cx="512" cy="351" r="7" fill="#BE719E" stroke="none"/>
+<circle cx="583" cy="350" r="19" fill="#FFF" stroke-width="7"/><circle cx="635" cy="373" r="20" fill="#FFF" stroke-width="7"/>
+<circle cx="588" cy="351" r="8" fill="#1D1D1B" stroke="none"/><circle cx="640" cy="374" r="8" fill="#1D1D1B" stroke="none"/>
+<ellipse cx="682" cy="448" rx="29" ry="31" fill="#F4A1C5" stroke="none"/>
+<path d="M555 457 C555 480 579 497 603 497 C617 497 628 491 637 477" stroke="#EE4F8F" stroke-width="8" fill="none"/>
+</g>
+</g></svg><text x="256" y="315" text-anchor="middle" font-size="14" fill="#776B80">idle</text><rect x="356" y="125" width="172" height="205" rx="16" fill="#FFF"/><svg x="342.928" y="124.52799999999999" width="198.144" height="198.144" viewBox="0 0 256 256" fill="none"><title>佩奇 · walk-a</title>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M86 184 C66 187 59 179 63 170 C67 162 78 170 72 177 C69 181 60 180 59 173" stroke="#F4C0D8" stroke-width="5"/>
+<path d="M104 205 L112 226 M155 205 L144 226" stroke="#F4C0D8" stroke-width="5"/>
+<ellipse cx="117" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/><ellipse cx="149" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/>
+<path d="M107 149 L67 159 M67 159 l-12 -2 M67 159 l-6 -11 M67 159 l-11 6 M179 149 L219 159 M219 159 l12 -2 M219 159 l6 -11 M219 159 l11 6" stroke="#F4C0D8" stroke-width="5"/>
+<path d="M117 122 C104 143 91 173 82 208 Q141 211 202 208 C192 175 179 144 168 122Z" fill="#F16465" stroke="#E8414B" stroke-width="4"/>
+<g transform="matrix(-.42 0 0 .42 409.3 -95.92)" stroke="#EB99C1" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+<path d="M628 333 C618 318 626 290 640 282 C652 275 666 281 666 296 C666 313 656 330 646 340Z" fill="#F4C0D8"/>
+<path d="M674 348 C669 335 687 310 701 311 C716 307 725 318 720 332 C714 348 704 359 694 369Z" fill="#F4C0D8"/>
+<path d="M515 311 C551 312 613 324 659 343 C686 356 711 376 723 404 C735 432 736 465 723 493 C704 536 663 555 619 552 C573 550 540 535 529 507 C521 485 523 453 538 429 C511 420 486 408 474 389 C460 370 457 350 466 333 C476 319 492 308 515 311Z" fill="#F4C0D8"/>
+<path d="M515 311 C482 305 458 327 464 355 C469 378 487 393 508 389 C525 386 538 366 537 345 C537 329 529 316 515 311Z" fill="#F4C0D8" stroke-width="8"/>
+<circle cx="491" cy="346" r="7" fill="#BE719E" stroke="none"/><circle cx="512" cy="351" r="7" fill="#BE719E" stroke="none"/>
+<circle cx="583" cy="350" r="19" fill="#FFF" stroke-width="7"/><circle cx="635" cy="373" r="20" fill="#FFF" stroke-width="7"/>
+<circle cx="588" cy="351" r="8" fill="#1D1D1B" stroke="none"/><circle cx="640" cy="374" r="8" fill="#1D1D1B" stroke="none"/>
+<ellipse cx="682" cy="448" rx="29" ry="31" fill="#F4A1C5" stroke="none"/>
+<path d="M555 457 C555 480 579 497 603 497 C617 497 628 491 637 477" stroke="#EE4F8F" stroke-width="8" fill="none"/>
+</g>
+</g></svg><text x="442" y="315" text-anchor="middle" font-size="14" fill="#776B80">walk-a</text><rect x="542" y="125" width="172" height="205" rx="16" fill="#FFF"/><svg x="528.928" y="124.52799999999999" width="198.144" height="198.144" viewBox="0 0 256 256" fill="none"><title>佩奇 · walk-b</title>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M86 184 C66 187 59 179 63 170 C67 162 78 170 72 177 C69 181 60 180 59 173" stroke="#F4C0D8" stroke-width="5"/>
+<path d="M104 205 L92 226 M155 205 L164 226" stroke="#F4C0D8" stroke-width="5"/>
+<ellipse cx="97" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/><ellipse cx="169" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/>
+<path d="M107 149 L87 159 M87 159 l-12 -2 M87 159 l-6 -11 M87 159 l-11 6 M179 149 L199 159 M199 159 l12 -2 M199 159 l6 -11 M199 159 l11 6" stroke="#F4C0D8" stroke-width="5"/>
+<path d="M117 122 C104 143 91 173 82 208 Q141 211 202 208 C192 175 179 144 168 122Z" fill="#F16465" stroke="#E8414B" stroke-width="4"/>
+<g transform="matrix(-.42 0 0 .42 409.3 -95.92)" stroke="#EB99C1" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+<path d="M628 333 C618 318 626 290 640 282 C652 275 666 281 666 296 C666 313 656 330 646 340Z" fill="#F4C0D8"/>
+<path d="M674 348 C669 335 687 310 701 311 C716 307 725 318 720 332 C714 348 704 359 694 369Z" fill="#F4C0D8"/>
+<path d="M515 311 C551 312 613 324 659 343 C686 356 711 376 723 404 C735 432 736 465 723 493 C704 536 663 555 619 552 C573 550 540 535 529 507 C521 485 523 453 538 429 C511 420 486 408 474 389 C460 370 457 350 466 333 C476 319 492 308 515 311Z" fill="#F4C0D8"/>
+<path d="M515 311 C482 305 458 327 464 355 C469 378 487 393 508 389 C525 386 538 366 537 345 C537 329 529 316 515 311Z" fill="#F4C0D8" stroke-width="8"/>
+<circle cx="491" cy="346" r="7" fill="#BE719E" stroke="none"/><circle cx="512" cy="351" r="7" fill="#BE719E" stroke="none"/>
+<circle cx="583" cy="350" r="19" fill="#FFF" stroke-width="7"/><circle cx="635" cy="373" r="20" fill="#FFF" stroke-width="7"/>
+<circle cx="588" cy="351" r="8" fill="#1D1D1B" stroke="none"/><circle cx="640" cy="374" r="8" fill="#1D1D1B" stroke="none"/>
+<ellipse cx="682" cy="448" rx="29" ry="31" fill="#F4A1C5" stroke="none"/>
+<path d="M555 457 C555 480 579 497 603 497 C617 497 628 491 637 477" stroke="#EE4F8F" stroke-width="8" fill="none"/>
+</g>
+</g></svg><text x="628" y="315" text-anchor="middle" font-size="14" fill="#776B80">walk-b</text><rect x="728" y="125" width="172" height="205" rx="16" fill="#FFF"/><svg x="714.928" y="124.52799999999999" width="198.144" height="198.144" viewBox="0 0 256 256" fill="none"><title>佩奇 · jump</title>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M86 184 C66 187 59 179 63 170 C67 162 78 170 72 177 C69 181 60 180 59 173" stroke="#F4C0D8" stroke-width="5"/>
+<path d="M104 205 L102 226 M155 205 L154 226" stroke="#F4C0D8" stroke-width="5"/>
+<ellipse cx="107" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/><ellipse cx="159" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/>
+<path d="M106 146 L74 123 M74 123 L62 120 M74 123 L69 112 M74 123 L61 129 M180 146 L209 120 M209 120 L219 115 M209 120 L206 109 M209 120 L220 123" stroke="#F4C0D8" stroke-width="5"/>
+<path d="M117 122 C104 143 91 173 82 208 Q141 211 202 208 C192 175 179 144 168 122Z" fill="#F16465" stroke="#E8414B" stroke-width="4"/>
+<g transform="matrix(-.42 0 0 .42 409.3 -95.92)" stroke="#EB99C1" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+<path d="M628 333 C618 318 626 290 640 282 C652 275 666 281 666 296 C666 313 656 330 646 340Z" fill="#F4C0D8"/>
+<path d="M674 348 C669 335 687 310 701 311 C716 307 725 318 720 332 C714 348 704 359 694 369Z" fill="#F4C0D8"/>
+<path d="M515 311 C551 312 613 324 659 343 C686 356 711 376 723 404 C735 432 736 465 723 493 C704 536 663 555 619 552 C573 550 540 535 529 507 C521 485 523 453 538 429 C511 420 486 408 474 389 C460 370 457 350 466 333 C476 319 492 308 515 311Z" fill="#F4C0D8"/>
+<path d="M515 311 C482 305 458 327 464 355 C469 378 487 393 508 389 C525 386 538 366 537 345 C537 329 529 316 515 311Z" fill="#F4C0D8" stroke-width="8"/>
+<circle cx="491" cy="346" r="7" fill="#BE719E" stroke="none"/><circle cx="512" cy="351" r="7" fill="#BE719E" stroke="none"/>
+<circle cx="583" cy="350" r="19" fill="#FFF" stroke-width="7"/><circle cx="635" cy="373" r="20" fill="#FFF" stroke-width="7"/>
+<circle cx="588" cy="351" r="8" fill="#1D1D1B" stroke="none"/><circle cx="640" cy="374" r="8" fill="#1D1D1B" stroke="none"/>
+<ellipse cx="682" cy="448" rx="29" ry="31" fill="#F4A1C5" stroke="none"/>
+<path d="M555 457 C576 463 610 466 638 458 C635 489 615 504 594 498 C571 494 557 479 555 457Z" fill="#1D1D1B" stroke="#EE4F8F" stroke-width="5"/><path d="M576 490 Q595 477 619 489 Q607 503 594 498 Q583 497 576 490Z" fill="#EE4F8F" stroke="none"/>
+</g>
+</g></svg><text x="814" y="315" text-anchor="middle" font-size="14" fill="#776B80">jump</text><text x="38" y="444" font-size="20" fill="#493954">乔治</text><rect x="170" y="351" width="172" height="205" rx="16" fill="#FFF"/><svg x="186.64960000000002" y="403.4696" width="138.7008" height="138.7008" viewBox="0 0 256 256" fill="none"><title>乔治 · idle</title>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M86 184 C66 187 59 179 63 170 C67 162 78 170 72 177 C69 181 60 180 59 173" stroke="#FEB8E2" stroke-width="5"/>
+<path d="M104 205 L102 226 M155 205 L154 226" stroke="#FEB8E2" stroke-width="5"/>
+<ellipse cx="107" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/><ellipse cx="159" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/>
+<path d="M107 149 L77 159 M77 159 l-12 -2 M77 159 l-6 -11 M77 159 l-11 6 M179 149 L209 159 M209 159 l12 -2 M209 159 l6 -11 M209 159 l11 6" stroke="#FEB8E2" stroke-width="5"/>
+<ellipse cx="131" cy="166" rx="58" ry="42" fill="#6497DA" stroke="#4283BF" stroke-width="4"/>
+<g transform="matrix(-.5 0 0 .5 485 -145)" stroke="#E991C6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+<path d="M706 386 C700 365 704 344 714 336 C725 328 736 337 734 352 C734 369 725 383 718 393Z" fill="#FEB8E2"/>
+<path d="M757 395 C755 379 771 355 784 355 C799 351 805 366 796 383 L779 405Z" fill="#FEB8E2"/>
+<path d="M565 348 C596 347 650 357 690 372 C730 384 770 409 792 438 C813 465 820 499 811 530 C801 568 770 589 732 593 C690 599 641 586 616 563 C592 542 588 516 602 490 C572 483 549 470 534 455 C516 440 509 416 513 393 C517 371 536 350 565 348Z" fill="#FEB8E2"/>
+<path d="M565 348 C532 346 509 379 513 411 C516 439 532 455 552 454 C578 452 598 429 598 400 C598 376 581 354 565 348Z" fill="#FEB8E2"/>
+<circle cx="540" cy="396" r="9" fill="#C86CA4" stroke="none"/><circle cx="567" cy="405" r="9" fill="#C86CA4" stroke="none"/>
+<circle cx="660" cy="400" r="21" fill="#FFF" stroke-width="8"/><circle cx="714" cy="430" r="21" fill="#FFF" stroke-width="8"/>
+<circle cx="659" cy="399" r="9" fill="#000" stroke="none"/><circle cx="713" cy="430" r="9" fill="#000" stroke="none"/>
+<circle cx="752" cy="510" r="32" fill="#FF8CD1" stroke="none"/>
+<path d="M622 512 C625 535 650 548 676 528" fill="none" stroke="#BE659A" stroke-width="10"/>
+</g>
+</g></svg><text x="256" y="541" text-anchor="middle" font-size="14" fill="#776B80">idle</text><rect x="356" y="351" width="172" height="205" rx="16" fill="#FFF"/><svg x="372.6496" y="403.4696" width="138.7008" height="138.7008" viewBox="0 0 256 256" fill="none"><title>乔治 · walk-a</title>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M86 184 C66 187 59 179 63 170 C67 162 78 170 72 177 C69 181 60 180 59 173" stroke="#FEB8E2" stroke-width="5"/>
+<path d="M104 205 L112 226 M155 205 L144 226" stroke="#FEB8E2" stroke-width="5"/>
+<ellipse cx="117" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/><ellipse cx="149" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/>
+<path d="M107 149 L67 159 M67 159 l-12 -2 M67 159 l-6 -11 M67 159 l-11 6 M179 149 L219 159 M219 159 l12 -2 M219 159 l6 -11 M219 159 l11 6" stroke="#FEB8E2" stroke-width="5"/>
+<ellipse cx="131" cy="166" rx="58" ry="42" fill="#6497DA" stroke="#4283BF" stroke-width="4"/>
+<g transform="matrix(-.5 0 0 .5 485 -145)" stroke="#E991C6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+<path d="M706 386 C700 365 704 344 714 336 C725 328 736 337 734 352 C734 369 725 383 718 393Z" fill="#FEB8E2"/>
+<path d="M757 395 C755 379 771 355 784 355 C799 351 805 366 796 383 L779 405Z" fill="#FEB8E2"/>
+<path d="M565 348 C596 347 650 357 690 372 C730 384 770 409 792 438 C813 465 820 499 811 530 C801 568 770 589 732 593 C690 599 641 586 616 563 C592 542 588 516 602 490 C572 483 549 470 534 455 C516 440 509 416 513 393 C517 371 536 350 565 348Z" fill="#FEB8E2"/>
+<path d="M565 348 C532 346 509 379 513 411 C516 439 532 455 552 454 C578 452 598 429 598 400 C598 376 581 354 565 348Z" fill="#FEB8E2"/>
+<circle cx="540" cy="396" r="9" fill="#C86CA4" stroke="none"/><circle cx="567" cy="405" r="9" fill="#C86CA4" stroke="none"/>
+<circle cx="660" cy="400" r="21" fill="#FFF" stroke-width="8"/><circle cx="714" cy="430" r="21" fill="#FFF" stroke-width="8"/>
+<circle cx="659" cy="399" r="9" fill="#000" stroke="none"/><circle cx="713" cy="430" r="9" fill="#000" stroke="none"/>
+<circle cx="752" cy="510" r="32" fill="#FF8CD1" stroke="none"/>
+<path d="M622 512 C625 535 650 548 676 528" fill="none" stroke="#BE659A" stroke-width="10"/>
+</g>
+</g></svg><text x="442" y="541" text-anchor="middle" font-size="14" fill="#776B80">walk-a</text><rect x="542" y="351" width="172" height="205" rx="16" fill="#FFF"/><svg x="558.6496" y="403.4696" width="138.7008" height="138.7008" viewBox="0 0 256 256" fill="none"><title>乔治 · walk-b</title>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M86 184 C66 187 59 179 63 170 C67 162 78 170 72 177 C69 181 60 180 59 173" stroke="#FEB8E2" stroke-width="5"/>
+<path d="M104 205 L92 226 M155 205 L164 226" stroke="#FEB8E2" stroke-width="5"/>
+<ellipse cx="97" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/><ellipse cx="169" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/>
+<path d="M107 149 L87 159 M87 159 l-12 -2 M87 159 l-6 -11 M87 159 l-11 6 M179 149 L199 159 M199 159 l12 -2 M199 159 l6 -11 M199 159 l11 6" stroke="#FEB8E2" stroke-width="5"/>
+<ellipse cx="131" cy="166" rx="58" ry="42" fill="#6497DA" stroke="#4283BF" stroke-width="4"/>
+<g transform="matrix(-.5 0 0 .5 485 -145)" stroke="#E991C6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+<path d="M706 386 C700 365 704 344 714 336 C725 328 736 337 734 352 C734 369 725 383 718 393Z" fill="#FEB8E2"/>
+<path d="M757 395 C755 379 771 355 784 355 C799 351 805 366 796 383 L779 405Z" fill="#FEB8E2"/>
+<path d="M565 348 C596 347 650 357 690 372 C730 384 770 409 792 438 C813 465 820 499 811 530 C801 568 770 589 732 593 C690 599 641 586 616 563 C592 542 588 516 602 490 C572 483 549 470 534 455 C516 440 509 416 513 393 C517 371 536 350 565 348Z" fill="#FEB8E2"/>
+<path d="M565 348 C532 346 509 379 513 411 C516 439 532 455 552 454 C578 452 598 429 598 400 C598 376 581 354 565 348Z" fill="#FEB8E2"/>
+<circle cx="540" cy="396" r="9" fill="#C86CA4" stroke="none"/><circle cx="567" cy="405" r="9" fill="#C86CA4" stroke="none"/>
+<circle cx="660" cy="400" r="21" fill="#FFF" stroke-width="8"/><circle cx="714" cy="430" r="21" fill="#FFF" stroke-width="8"/>
+<circle cx="659" cy="399" r="9" fill="#000" stroke="none"/><circle cx="713" cy="430" r="9" fill="#000" stroke="none"/>
+<circle cx="752" cy="510" r="32" fill="#FF8CD1" stroke="none"/>
+<path d="M622 512 C625 535 650 548 676 528" fill="none" stroke="#BE659A" stroke-width="10"/>
+</g>
+</g></svg><text x="628" y="541" text-anchor="middle" font-size="14" fill="#776B80">walk-b</text><rect x="728" y="351" width="172" height="205" rx="16" fill="#FFF"/><svg x="744.6496" y="403.4696" width="138.7008" height="138.7008" viewBox="0 0 256 256" fill="none"><title>乔治 · jump</title>
+<g stroke-linecap="round" stroke-linejoin="round">
+<path d="M86 184 C66 187 59 179 63 170 C67 162 78 170 72 177 C69 181 60 180 59 173" stroke="#FEB8E2" stroke-width="5"/>
+<path d="M104 205 L102 226 M155 205 L154 226" stroke="#FEB8E2" stroke-width="5"/>
+<ellipse cx="107" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/><ellipse cx="159" cy="227" rx="13" ry="4.5" fill="#1D1D1B"/>
+<path d="M106 146 L74 123 M74 123 L62 120 M74 123 L69 112 M74 123 L61 129 M180 146 L209 120 M209 120 L219 115 M209 120 L206 109 M209 120 L220 123" stroke="#FEB8E2" stroke-width="5"/>
+<ellipse cx="131" cy="166" rx="58" ry="42" fill="#6497DA" stroke="#4283BF" stroke-width="4"/>
+<g transform="matrix(-.5 0 0 .5 485 -145)" stroke="#E991C6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+<path d="M706 386 C700 365 704 344 714 336 C725 328 736 337 734 352 C734 369 725 383 718 393Z" fill="#FEB8E2"/>
+<path d="M757 395 C755 379 771 355 784 355 C799 351 805 366 796 383 L779 405Z" fill="#FEB8E2"/>
+<path d="M565 348 C596 347 650 357 690 372 C730 384 770 409 792 438 C813 465 820 499 811 530 C801 568 770 589 732 593 C690 599 641 586 616 563 C592 542 588 516 602 490 C572 483 549 470 534 455 C516 440 509 416 513 393 C517 371 536 350 565 348Z" fill="#FEB8E2"/>
+<path d="M565 348 C532 346 509 379 513 411 C516 439 532 455 552 454 C578 452 598 429 598 400 C598 376 581 354 565 348Z" fill="#FEB8E2"/>
+<circle cx="540" cy="396" r="9" fill="#C86CA4" stroke="none"/><circle cx="567" cy="405" r="9" fill="#C86CA4" stroke="none"/>
+<circle cx="660" cy="400" r="21" fill="#FFF" stroke-width="8"/><circle cx="714" cy="430" r="21" fill="#FFF" stroke-width="8"/>
+<circle cx="659" cy="399" r="9" fill="#000" stroke="none"/><circle cx="713" cy="430" r="9" fill="#000" stroke="none"/>
+<circle cx="752" cy="510" r="32" fill="#FF8CD1" stroke="none"/>
+<path d="M622 512 C635 519 661 522 679 511 C676 545 652 557 636 542 C626 534 622 523 622 512Z" fill="#1D1D1B" stroke="#BE659A" stroke-width="5"/><path d="M636 537 Q653 525 670 539 Q658 551 646 546Z" fill="#F47BBA" stroke="none"/>
+</g>
+</g></svg><text x="814" y="541" text-anchor="middle" font-size="14" fill="#776B80">jump</text><text x="38" y="670" font-size="20" fill="#493954">疯狂小鸡</text><rect x="170" y="577" width="172" height="205" rx="16" fill="#FFF"/><svg x="186.64960000000002" y="629.4696" width="138.7008" height="138.7008" viewBox="0 0 256 256" fill="none"><title>快乐母鸡 · idle</title><g stroke="#292600" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M102 209 L102 227 M102 217 l-14 10 M102 217 l12 10 M154 209 L154 227 M154 217 l-12 10 M154 217 l14 10" fill="none"/>
+<g>
+<path d="M59 150 C44 146 30 150 31 158 C30 163 37 165 42 163 C27 167 30 180 41 178 C27 187 43 195 50 185 L66 177Z" fill="#FFFF11"/>
+<path d="M105 76 C97 61 94 43 103 41 C111 39 112 50 118 53 C122 39 130 37 135 45 C138 49 135 54 139 56 C144 43 153 43 156 51 C160 59 153 73 150 78Z" fill="#ED1635"/>
+<path d="M194 111 L236 131 L194 153Z" fill="#FFFFCD"/><path d="M197 132 L234 131" fill="none"/>
+<circle cx="128" cy="140" r="72" fill="#FFFF11"/>
+<circle cx="166" cy="114" r="9" fill="#292600" stroke="none"/>
+</g></g></svg><text x="256" y="767" text-anchor="middle" font-size="14" fill="#776B80">idle</text><rect x="356" y="577" width="172" height="205" rx="16" fill="#FFF"/><svg x="372.6496" y="629.4696" width="138.7008" height="138.7008" viewBox="0 0 256 256" fill="none"><title>快乐母鸡 · blink</title><g stroke="#292600" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M102 209 L102 227 M102 217 l-14 10 M102 217 l12 10 M154 209 L154 227 M154 217 l-12 10 M154 217 l14 10" fill="none"/>
+<g>
+<path d="M59 150 C44 146 30 150 31 158 C30 163 37 165 42 163 C27 167 30 180 41 178 C27 187 43 195 50 185 L66 177Z" fill="#FFFF11"/>
+<path d="M105 76 C97 61 94 43 103 41 C111 39 112 50 118 53 C122 39 130 37 135 45 C138 49 135 54 139 56 C144 43 153 43 156 51 C160 59 153 73 150 78Z" fill="#ED1635"/>
+<path d="M194 111 L236 131 L194 153Z" fill="#FFFFCD"/><path d="M197 132 L234 131" fill="none"/>
+<circle cx="128" cy="140" r="72" fill="#FFFF11"/>
+<path d="M157 115 Q166 106 175 115" fill="none"/>
+</g></g></svg><text x="442" y="767" text-anchor="middle" font-size="14" fill="#776B80">blink</text><rect x="542" y="577" width="172" height="205" rx="16" fill="#FFF"/><svg x="558.6496" y="629.4696" width="138.7008" height="138.7008" viewBox="0 0 256 256" fill="none"><title>快乐母鸡 · walk-a</title><g stroke="#292600" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M102 209 L111 227 M111 217 l-14 10 M111 217 l12 10 M154 209 L145 227 M145 217 l-12 10 M145 217 l14 10" fill="none"/>
+<g>
+<path d="M59 150 C44 146 30 150 31 158 C30 163 37 165 42 163 C27 167 30 180 41 178 C27 187 43 195 50 185 L66 177Z" fill="#FFFF11"/>
+<path d="M105 76 C97 61 94 43 103 41 C111 39 112 50 118 53 C122 39 130 37 135 45 C138 49 135 54 139 56 C144 43 153 43 156 51 C160 59 153 73 150 78Z" fill="#ED1635"/>
+<path d="M194 111 L236 131 L194 153Z" fill="#FFFFCD"/><path d="M197 132 L234 131" fill="none"/>
+<circle cx="128" cy="140" r="72" fill="#FFFF11"/>
+<circle cx="166" cy="114" r="9" fill="#292600" stroke="none"/>
+</g></g></svg><text x="628" y="767" text-anchor="middle" font-size="14" fill="#776B80">walk-a</text><rect x="728" y="577" width="172" height="205" rx="16" fill="#FFF"/><svg x="744.6496" y="629.4696" width="138.7008" height="138.7008" viewBox="0 0 256 256" fill="none"><title>快乐母鸡 · walk-b</title><g stroke="#292600" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M102 209 L93 227 M93 217 l-14 10 M93 217 l12 10 M154 209 L163 227 M163 217 l-12 10 M163 217 l14 10" fill="none"/>
+<g>
+<path d="M59 150 C44 146 30 150 31 158 C30 163 37 165 42 163 C27 167 30 180 41 178 C27 187 43 195 50 185 L66 177Z" fill="#FFFF11"/>
+<path d="M105 76 C97 61 94 43 103 41 C111 39 112 50 118 53 C122 39 130 37 135 45 C138 49 135 54 139 56 C144 43 153 43 156 51 C160 59 153 73 150 78Z" fill="#ED1635"/>
+<path d="M194 111 L236 131 L194 153Z" fill="#FFFFCD"/><path d="M197 132 L234 131" fill="none"/>
+<circle cx="128" cy="140" r="72" fill="#FFFF11"/>
+<circle cx="166" cy="114" r="9" fill="#292600" stroke="none"/>
+</g></g></svg><text x="814" y="767" text-anchor="middle" font-size="14" fill="#776B80">walk-b</text><rect x="914" y="577" width="172" height="205" rx="16" fill="#FFF"/><svg x="930.6496" y="629.4696" width="138.7008" height="138.7008" viewBox="0 0 256 256" fill="none"><title>快乐母鸡 · lay</title><g stroke="#292600" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M102 209 L102 227 M102 217 l-14 10 M102 217 l12 10 M154 209 L154 227 M154 217 l-12 10 M154 217 l14 10" fill="none"/>
+<g transform="translate(0 14) scale(1 .92)">
+<path d="M59 150 C44 146 30 150 31 158 C30 163 37 165 42 163 C27 167 30 180 41 178 C27 187 43 195 50 185 L66 177Z" fill="#FFFF11"/>
+<path d="M105 76 C97 61 94 43 103 41 C111 39 112 50 118 53 C122 39 130 37 135 45 C138 49 135 54 139 56 C144 43 153 43 156 51 C160 59 153 73 150 78Z" fill="#ED1635"/>
+<path d="M194 111 L236 131 L194 153Z" fill="#FFFFCD"/><path d="M197 132 L234 131" fill="none"/>
+<circle cx="128" cy="140" r="72" fill="#FFFF11"/>
+<circle cx="166" cy="114" r="9" fill="#292600" stroke="none"/>
+</g></g></svg><text x="1000" y="767" text-anchor="middle" font-size="14" fill="#776B80">lay</text><rect x="1100" y="577" width="172" height="205" rx="16" fill="#FFF"/><svg x="1116.6496" y="629.4696" width="138.7008" height="138.7008" viewBox="0 0 256 256" fill="none"><title>快乐母鸡 · happy</title><g stroke="#292600" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M102 209 L89 221 M89 221 L76 217 M89 221 L88 230 M154 209 L169 219 M169 219 L181 214 M169 219 L173 227" fill="none"/>
+<g>
+<path d="M59 150 C44 146 30 150 31 158 C30 163 37 165 42 163 C27 167 30 180 41 178 C27 187 43 195 50 185 L66 177Z" fill="#FFFF11" transform="rotate(24 60 162)"/>
+<path d="M105 76 C97 61 94 43 103 41 C111 39 112 50 118 53 C122 39 130 37 135 45 C138 49 135 54 139 56 C144 43 153 43 156 51 C160 59 153 73 150 78Z" fill="#ED1635"/>
+<path d="M194 111 L236 131 L194 153Z" fill="#FFFFCD"/><path d="M197 132 L234 131" fill="none"/>
+<circle cx="128" cy="140" r="72" fill="#FFFF11"/>
+<path d="M157 115 Q166 106 175 115" fill="none"/>
+</g></g></svg><text x="1186" y="767" text-anchor="middle" font-size="14" fill="#776B80">happy</text><text x="38" y="896" font-size="20" fill="#493954">幼鸡 / 蛋</text><rect x="170" y="803" width="172" height="205" rx="16" fill="#FFF"/><svg x="214.1696" y="905.7968" width="83.6608" height="83.6608" viewBox="0 0 128 128" fill="none"><title>小鸡 · idle</title><g transform="translate(0 -2) scale(.5)"><g stroke="#292600" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M102 209 L102 227 M102 217 l-14 10 M102 217 l12 10 M154 209 L154 227 M154 217 l-12 10 M154 217 l14 10" fill="none"/>
+<g>
+<path d="M59 150 C44 146 30 150 31 158 C30 163 37 165 42 163 C27 167 30 180 41 178 C27 187 43 195 50 185 L66 177Z" fill="#FFFF11"/>
+<path d="M105 76 C97 61 94 43 103 41 C111 39 112 50 118 53 C122 39 130 37 135 45 C138 49 135 54 139 56 C144 43 153 43 156 51 C160 59 153 73 150 78Z" fill="#ED1635"/>
+<path d="M194 111 L236 131 L194 153Z" fill="#FFFFCD"/><path d="M197 132 L234 131" fill="none"/>
+<circle cx="128" cy="140" r="72" fill="#FFFF11"/>
+<circle cx="166" cy="114" r="9" fill="#292600" stroke="none"/>
+</g></g></g></svg><text x="256" y="993" text-anchor="middle" font-size="14" fill="#776B80">idle</text><rect x="356" y="803" width="172" height="205" rx="16" fill="#FFF"/><svg x="400.1696" y="905.7968" width="83.6608" height="83.6608" viewBox="0 0 128 128" fill="none"><title>小鸡 · walk-a</title><g transform="translate(0 -2) scale(.5)"><g stroke="#292600" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M102 209 L111 227 M111 217 l-14 10 M111 217 l12 10 M154 209 L145 227 M145 217 l-12 10 M145 217 l14 10" fill="none"/>
+<g>
+<path d="M59 150 C44 146 30 150 31 158 C30 163 37 165 42 163 C27 167 30 180 41 178 C27 187 43 195 50 185 L66 177Z" fill="#FFFF11"/>
+<path d="M105 76 C97 61 94 43 103 41 C111 39 112 50 118 53 C122 39 130 37 135 45 C138 49 135 54 139 56 C144 43 153 43 156 51 C160 59 153 73 150 78Z" fill="#ED1635"/>
+<path d="M194 111 L236 131 L194 153Z" fill="#FFFFCD"/><path d="M197 132 L234 131" fill="none"/>
+<circle cx="128" cy="140" r="72" fill="#FFFF11"/>
+<circle cx="166" cy="114" r="9" fill="#292600" stroke="none"/>
+</g></g></g></svg><text x="442" y="993" text-anchor="middle" font-size="14" fill="#776B80">walk-a</text><rect x="542" y="803" width="172" height="205" rx="16" fill="#FFF"/><svg x="586.1696" y="905.7968" width="83.6608" height="83.6608" viewBox="0 0 128 128" fill="none"><title>小鸡 · walk-b</title><g transform="translate(0 -2) scale(.5)"><g stroke="#292600" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M102 209 L93 227 M93 217 l-14 10 M93 217 l12 10 M154 209 L163 227 M163 217 l-12 10 M163 217 l14 10" fill="none"/>
+<g>
+<path d="M59 150 C44 146 30 150 31 158 C30 163 37 165 42 163 C27 167 30 180 41 178 C27 187 43 195 50 185 L66 177Z" fill="#FFFF11"/>
+<path d="M105 76 C97 61 94 43 103 41 C111 39 112 50 118 53 C122 39 130 37 135 45 C138 49 135 54 139 56 C144 43 153 43 156 51 C160 59 153 73 150 78Z" fill="#ED1635"/>
+<path d="M194 111 L236 131 L194 153Z" fill="#FFFFCD"/><path d="M197 132 L234 131" fill="none"/>
+<circle cx="128" cy="140" r="72" fill="#FFFF11"/>
+<circle cx="166" cy="114" r="9" fill="#292600" stroke="none"/>
+</g></g></g></svg><text x="628" y="993" text-anchor="middle" font-size="14" fill="#776B80">walk-b</text><rect x="728" y="803" width="172" height="205" rx="16" fill="#FFF"/><svg x="772.1696" y="905.7968" width="83.6608" height="83.6608" viewBox="0 0 128 128" fill="none"><title>小鸡 · hatch</title><g transform="translate(0 -2) scale(.5)"><g stroke="#292600" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M102 209 L89 221 M89 221 L76 217 M89 221 L88 230 M154 209 L169 219 M169 219 L181 214 M169 219 L173 227" fill="none"/>
+<g>
+<path d="M59 150 C44 146 30 150 31 158 C30 163 37 165 42 163 C27 167 30 180 41 178 C27 187 43 195 50 185 L66 177Z" fill="#FFFF11" transform="rotate(24 60 162)"/>
+<path d="M105 76 C97 61 94 43 103 41 C111 39 112 50 118 53 C122 39 130 37 135 45 C138 49 135 54 139 56 C144 43 153 43 156 51 C160 59 153 73 150 78Z" fill="#ED1635"/>
+<path d="M194 111 L236 131 L194 153Z" fill="#FFFFCD"/><path d="M197 132 L234 131" fill="none"/>
+<circle cx="128" cy="140" r="72" fill="#FFFF11"/>
+<path d="M157 115 Q166 106 175 115" fill="none"/>
+</g></g></g></svg><text x="814" y="993" text-anchor="middle" font-size="14" fill="#776B80">hatch</text><rect x="914" y="803" width="172" height="205" rx="16" fill="#FFF"/><svg x="977.296" y="929.808" width="45.408" height="56.760000000000005" viewBox="0 0 96 120" fill="none"><title>蛋 · whole</title><path d="M48 12 C31 12 19 42 19 66 C19 89 31 104 48 104 C65 104 77 89 77 66 C77 42 65 12 48 12Z" fill="#FFFFCD" stroke="#DCC642" stroke-width="4.5"/></svg><text x="1000" y="993" text-anchor="middle" font-size="14" fill="#776B80">whole</text><rect x="1100" y="803" width="172" height="205" rx="16" fill="#FFF"/><svg x="1163.296" y="929.808" width="45.408" height="56.760000000000005" viewBox="0 0 96 120" fill="none"><title>蛋 · crack-1</title><path d="M48 12 C31 12 19 42 19 66 C19 89 31 104 48 104 C65 104 77 89 77 66 C77 42 65 12 48 12Z" fill="#FFFFCD" stroke="#DCC642" stroke-width="4.5"/><path d="M21 61 L31 54 L41 65 L50 56 L59 66 L75 59" fill="none" stroke="#DCC642" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><text x="1186" y="993" text-anchor="middle" font-size="14" fill="#776B80">crack-1</text><text x="38" y="1122" font-size="20" fill="#493954">裂纹 / 蛋壳</text><rect x="170" y="1029" width="172" height="205" rx="16" fill="#FFF"/><svg x="233.296" y="1155.808" width="45.408" height="56.760000000000005" viewBox="0 0 96 120" fill="none"><title>蛋 · crack-2</title><path d="M48 12 C31 12 19 42 19 66 C19 89 31 104 48 104 C65 104 77 89 77 66 C77 42 65 12 48 12Z" fill="#FFFFCD" stroke="#DCC642" stroke-width="4.5"/><path d="M21 61 L31 54 L41 65 L50 56 L59 66 L75 59" fill="none" stroke="#DCC642" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 56 L45 41 L52 30 M59 66 L54 79 L61 90" fill="none" stroke="#DCC642" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><text x="256" y="1219" text-anchor="middle" font-size="14" fill="#776B80">crack-2</text><rect x="356" y="1029" width="172" height="205" rx="16" fill="#FFF"/><svg x="419.296" y="1155.808" width="45.408" height="56.760000000000005" viewBox="0 0 96 120" fill="none"><title>蛋壳 · top</title><path d="M21 61 C22 39 33 12 48 12 C63 12 73 37 75 59 L59 66 L50 56 L41 65 L31 54Z" fill="#FFFFCD" stroke="#DCC642" stroke-width="4.5" stroke-linejoin="round"/></svg><text x="442" y="1219" text-anchor="middle" font-size="14" fill="#776B80">shell-top</text><rect x="542" y="1029" width="172" height="205" rx="16" fill="#FFF"/><svg x="605.296" y="1155.808" width="45.408" height="56.760000000000005" viewBox="0 0 96 120" fill="none"><title>蛋壳 · bottom</title><path d="M21 61 L31 54 L41 65 L50 56 L59 66 L75 59 C80 82 66 104 48 104 C31 104 17 86 21 61Z" fill="#FFFFCD" stroke="#DCC642" stroke-width="4.5" stroke-linejoin="round"/></svg><text x="628" y="1219" text-anchor="middle" font-size="14" fill="#776B80">shell-bottom</text><text x="45" y="1280" font-size="14" fill="#776B80">参考来源和绘制说明见 art/REFERENCE_SOURCES.md；本图为新 SVG 的直接渲染。</text></svg>

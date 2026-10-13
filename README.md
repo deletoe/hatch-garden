@@ -52,7 +52,7 @@ Upload the contents of `dist/` to any HTTPS static host such as Nginx, Caddy, Gi
 ## License / 许可证
 
 The original code, documentation, and SVG artwork are available under the [MIT License](LICENSE). Third-party audio is not covered by that grant; see [NOTICE.md](NOTICE.md) and the audio notices for each asset’s terms and required attribution.
-The fan-drawn Peppa and George SVGs do not grant rights to the underlying third-party characters or names; see [NOTICE.md](NOTICE.md).
+The fan-drawn Peppa, George, and Happy Mrs Chicken SVGs do not grant rights to the underlying third-party characters or names; see [NOTICE.md](NOTICE.md). Their visual references are listed in [art/REFERENCE_SOURCES.md](art/REFERENCE_SOURCES.md).
 
 项目的原创代码、文档和 SVG 美术采用 [MIT License](LICENSE)。第三方音频不包含在 MIT 授权内；请查阅 [NOTICE.md](NOTICE.md) 以及每个音频资源的来源、许可与署名说明。
-佩奇和乔治 SVG 为重新绘制的同人形象；仓库授权不包含第三方角色及名称的权利，详见 [NOTICE.md](NOTICE.md)。
+佩奇、乔治和 Happy Mrs Chicken SVG 为根据参考图重绘的同人形象；仓库授权不包含第三方角色及名称的权利，详见 [NOTICE.md](NOTICE.md)。参考来源见 [art/REFERENCE_SOURCES.md](art/REFERENCE_SOURCES.md)。

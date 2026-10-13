@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none"><title>布丁小鸡 · walk-a</title><g stroke="#493954" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M52 96 L42 110 L31 112 M74 96 L86 102 L97 99" stroke="#87553B"/><path d="M33 70 L17 55 L19 80 L36 89" fill="#FFBE55"/><path d="M98 51 L117 61 L99 69" fill="#F29450"/><path d="M53 32 Q54 16 63 23 Q65 30 67 32 Q70 14 79 21 Q84 26 81 33" fill="#FFD369"/><path d="M26 70 C28 43 43 35 61 39 C77 23 99 35 102 53 C106 67 100 73 91 78 C84 101 50 107 32 90 C27 84 24 78 26 70Z" fill="#FFD369"/><path d="M42 72 Q57 60 71 74 Q63 89 49 84" fill="#FFBE55"/><circle cx="89" cy="53" r="3.5" fill="#493954" stroke="none"/><ellipse cx="91" cy="70" rx="6" ry="4" fill="#F6A079" stroke="none"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none"><title>小鸡 · walk-a</title><g transform="translate(0 -2) scale(.5)"><g stroke="#292600" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M102 209 L111 227 M111 217 l-14 10 M111 217 l12 10 M154 209 L145 227 M145 217 l-12 10 M145 217 l14 10" fill="none"/>
+<g>
+<path d="M59 150 C44 146 30 150 31 158 C30 163 37 165 42 163 C27 167 30 180 41 178 C27 187 43 195 50 185 L66 177Z" fill="#FFFF11"/>
+<path d="M105 76 C97 61 94 43 103 41 C111 39 112 50 118 53 C122 39 130 37 135 45 C138 49 135 54 139 56 C144 43 153 43 156 51 C160 59 153 73 150 78Z" fill="#ED1635"/>
+<path d="M194 111 L236 131 L194 153Z" fill="#FFFFCD"/><path d="M197 132 L234 131" fill="none"/>
+<circle cx="128" cy="140" r="72" fill="#FFFF11"/>
+<circle cx="166" cy="114" r="9" fill="#292600" stroke="none"/>
+</g></g></g></svg>

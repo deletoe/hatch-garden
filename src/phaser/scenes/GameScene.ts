@@ -156,7 +156,7 @@ export class GameScene extends Phaser.Scene {
         .setFlipX(adult.direction < 0)
         .setDepth(adult.y + 10);
       view.shadow
-        .setPosition(adult.x, adult.y + 16 * this.visualScale)
+        .setPosition(adult.x, adult.y + 3 * this.visualScale)
         .setDisplaySize((118 - jump * 0.8) * this.visualScale, 24 * this.visualScale)
         .setAlpha(adult.jumping ? 0.72 : 1)
         .setDepth(adult.y + 8);
@@ -215,7 +215,7 @@ export class GameScene extends Phaser.Scene {
       }
       const texture = `${pig.name}.${pig.pose}`;
       if (view.sprite.texture.key !== texture) view.sprite.setTexture(texture);
-      const size = pig.name === 'peppa' ? 0.8 : 0.72;
+      const size = pig.name === 'peppa' ? 0.9 : 0.63;
       const shadowSize = size / 0.72;
       const jump = pig.state === 'jumping' ? this.jumpHeight(time, index, 36) : 0;
       view.sprite.setPosition(pig.x, pig.y - jump).setScale(size * this.visualScale).setFlipX(pig.direction < 0).setDepth(pig.y + 12);
