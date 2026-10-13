@@ -7,6 +7,7 @@ type InternalPig = Pig & { targetX: number; targetY: number; runSpeed: number };
 const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 const PLAY_SECONDS = 20;
 const RESPAWN_SECONDS = 5;
+const PUDDLE_WANDER_CHANCE = 0.15;
 
 /** A single, persistent pair of pigs and a single puddle share the simulation clock. */
 export class MudPlay {
@@ -151,8 +152,16 @@ export class MudPlay {
   }
 
   private wanderTarget(origin: Point): Point {
-    const angle = this.between(0, Math.PI * 2);
+    const puddle = this.puddle;
+    const towardPuddle = puddle !== null && this.between(0, 1) < PUDDLE_WANDER_CHANCE;
+    const angle = towardPuddle
+      ? Math.atan2(puddle.y - origin.y, puddle.x - origin.x)
+      : this.between(0, Math.PI * 2);
     const distance = this.between(60, Math.max(90, Math.min(this.bounds.width, this.bounds.height) * 0.55));
+    if (towardPuddle) {
+      const step = Math.min(distance, Math.hypot(puddle.x - origin.x, puddle.y - origin.y));
+      return { x: origin.x + Math.cos(angle) * step, y: origin.y + Math.sin(angle) * step };
+    }
     const marginX = Math.min(70 * this.scale, (this.bounds.right - this.bounds.left) * 0.12);
     const marginY = Math.min(80 * this.scale, (this.bounds.bottom - this.bounds.top) * 0.15);
     return {

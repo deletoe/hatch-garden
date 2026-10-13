@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { MudPlay } from './MudPlay';
 import type { MudPuddle, Pig } from './types';
 
@@ -14,6 +14,63 @@ const prepare = (): { play: MudPlay; fixture: Fixture } => {
 };
 
 describe('MudPlay', () => {
+  it.each([0, 1])('gives pig %i a 15 percent mud direction while keeping random distance and walking speed', (index) => {
+    const { play, fixture } = prepare();
+    Object.assign(fixture.pigs[index], { x: 200, y: 360, targetX: 200, targetY: 360 });
+    Object.assign(fixture.pigs[1 - index], { x: 1150, y: 600, targetX: 1100, targetY: 650 });
+    const random = vi.spyOn(play as unknown as { between(min: number, max: number): number }, 'between');
+    random.mockReturnValueOnce(0.149).mockReturnValueOnce(200);
+    play.update(0.1, 1);
+    const pig = fixture.pigs[index];
+    expect(pig.targetX).toBe(400); // The random 200 px segment points toward the 640 px puddle center.
+    expect(pig.targetY).toBe(360);
+    expect(pig.x).toBeCloseTo(206.2);
+    expect(pig.state).toBe('roaming');
+    expect(random).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps the original random route in the 85 percent branch, including the 0.15 boundary', () => {
+    const { play, fixture } = prepare();
+    Object.assign(fixture.pigs[0], { x: 200, y: 360, targetX: 200, targetY: 360 });
+    Object.assign(fixture.pigs[1], { targetX: 1100, targetY: 650 });
+    const random = vi.spyOn(play as unknown as { between(min: number, max: number): number }, 'between');
+    random.mockReturnValueOnce(0.15).mockReturnValueOnce(Math.PI / 2).mockReturnValueOnce(200);
+    play.update(0.1, 1);
+    expect(fixture.pigs[0].targetX).toBeCloseTo(200);
+    expect(fixture.pigs[0].targetY).toBe(560);
+    expect(random).toHaveBeenCalledTimes(3);
+  });
+
+  it('does not draw a mud chance without a puddle or redirect the current segment', () => {
+    const { play, fixture } = prepare();
+    Object.assign(fixture.pigs[0], { x: 200, y: 360, targetX: 200, targetY: 360 });
+    Object.assign(fixture.pigs[1], { targetX: 1100, targetY: 650 });
+    fixture.puddle = null;
+    const random = vi.spyOn(play as unknown as { between(min: number, max: number): number }, 'between');
+    random.mockReturnValueOnce(Math.PI / 2).mockReturnValueOnce(200);
+    play.update(0.1, 1);
+    expect(random).toHaveBeenCalledTimes(2);
+    random.mockClear();
+    fixture.puddle = { id: 99, x: 640, y: 360, radiusX: 145, radiusY: 64, activatedAt: null };
+    play.update(0.1, 1.1);
+    expect(random).not.toHaveBeenCalled();
+    expect(fixture.pigs[0].targetY).toBe(560);
+  });
+
+  it('stops a mud-directed segment at the center instead of overshooting, then starts normal mud play on entry', () => {
+    const { play, fixture } = prepare();
+    Object.assign(fixture.pigs[0], { x: 400, y: 360, targetX: 400, targetY: 360 });
+    Object.assign(fixture.pigs[1], { targetX: 1100, targetY: 650 });
+    const random = vi.spyOn(play as unknown as { between(min: number, max: number): number }, 'between');
+    random.mockReturnValueOnce(0.1).mockReturnValueOnce(300);
+    play.update(0.1, 1);
+    expect(fixture.pigs[0].targetX).toBe(640);
+    for (let tick = 1; tick <= 120; tick++) play.update(1 / 60, 1 + tick / 60);
+    expect(play.snapshot().pigs[0].state).toBe('jumping');
+    expect(play.snapshot().pigs[1].state).toBe('running');
+    expect(play.snapshot().puddle?.activatedAt).not.toBeNull();
+  });
+
   it('keeps an unused puddle inert, then one visitor calls its companion to run over and jump', () => {
     const { play, fixture } = prepare();
     expect(play.isPlayingAt({ x: 640, y: 360 })).toBe(false);
