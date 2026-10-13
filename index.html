@@ -10,10 +10,10 @@
   <body>
     <main class="app-shell">
       <section id="game-shell" class="game-shell" aria-label="孵蛋花园游戏场地">
-        <div id="game-canvas" class="game-canvas" aria-label="点击场地让母鸡下蛋" role="application"></div>
+        <div id="game-canvas" class="game-canvas" aria-label="点击场地或按空格让母鸡下蛋" role="application" tabindex="0"></div>
         <div class="hud" aria-live="polite">
           <div class="score-card" aria-label="本局下蛋数">
-            <img src="./eggs/egg-whole.svg?v=reference-3" alt="" />
+            <img id="score-egg" src="./eggs/egg-whole.svg?v=reference-3" alt="" />
             <div>
               <span>本局下蛋</span>
               <strong id="session-score">000</strong>
@@ -34,11 +34,33 @@
 
         <section id="pause-panel" class="pause-panel" hidden aria-labelledby="pause-title">
           <div class="pause-card">
-            <img src="./characters/chick-hatch.svg" alt="一只开心的小鸡" />
-            <p class="game-name">Hatch Garden · 孵蛋花园</p>
-            <h2 id="pause-title">暂停中</h2>
-            <p class="pause-instructions">点击场地或按空格下蛋。蛋会从母鸡身边的空位出现。</p>
-            <p id="pause-message">回来后继续看小鸡破壳。</p>
+            <div class="pause-intro">
+              <img id="pause-mascot" src="./characters/chick-hatch.svg?v=reference-3" alt="一只开心的小鸡" />
+              <p class="game-name">Hatch Garden · 孵蛋花园</p>
+              <h2 id="pause-title">暂停中</h2>
+              <p class="pause-instructions">点击场地或按空格下蛋。蛋会从母鸡身边的空位出现。</p>
+              <p id="pause-message">回来后继续看小鸡破壳。</p>
+            </div>
+            <fieldset class="skin-picker">
+              <legend>切换皮肤</legend>
+              <div class="skin-options">
+                <button id="skin-reference" class="skin-option" type="button" aria-pressed="true">
+                  <span class="skin-preview" aria-hidden="true">
+                    <img src="./characters/hen-idle.svg?v=reference-3" loading="lazy" alt="" />
+                    <img src="./characters/peppa-idle.svg?v=reference-3" loading="lazy" alt="" />
+                  </span>
+                  <span>动画造型</span>
+                </button>
+                <button id="skin-classic" class="skin-option" type="button" aria-pressed="false">
+                  <span class="skin-preview" aria-hidden="true">
+                    <img src="./skins/classic/characters/hen-idle.svg?v=classic-1" loading="lazy" alt="" />
+                    <img src="./skins/classic/characters/peppa-idle.svg?v=classic-1" loading="lazy" alt="" />
+                  </span>
+                  <span>圆润造型</span>
+                </button>
+              </div>
+              <p id="skin-status" class="skin-status" aria-live="polite">随时换装，接着玩。</p>
+            </fieldset>
             <div class="pause-actions">
               <button id="resume-button" class="primary-button" type="button">继续玩</button>
               <button id="restart-button" class="secondary-button" type="button">重新开始本局</button>

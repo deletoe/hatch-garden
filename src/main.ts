@@ -6,13 +6,14 @@ import { GameUi } from './ui/GameUi';
 import './styles.css';
 
 const controller = new GameController();
-const ui = new GameUi(controller);
+const gameScene = new GameScene(controller);
+const ui = new GameUi(controller, (skin) => gameScene.selectSkin(skin));
 
 new Phaser.Game({
   type: Phaser.AUTO,
   parent: 'game-canvas',
   backgroundColor: '#c5bcec',
-  scene: [new BootScene(), new GameScene(controller)],
+  scene: [new BootScene(controller.state().settings.skin), gameScene],
   scale: {
     mode: Phaser.Scale.RESIZE,
     autoCenter: Phaser.Scale.CENTER_BOTH,

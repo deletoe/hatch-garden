@@ -1,4 +1,7 @@
 :root {
+  --ink: #493954;
+  --paper: #fff9ec;
+  --accent: #ffd369;
   color: #493954;
   background: #c5bcec;
   font-family: "Hiragino Sans GB", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
@@ -70,6 +73,11 @@ button:focus-visible {
   display: block;
   width: 100% !important;
   height: 100% !important;
+}
+
+.game-canvas:focus-visible {
+  outline: 3px solid var(--paper);
+  outline-offset: -3px;
 }
 
 .hud {
@@ -156,6 +164,7 @@ button:focus-visible {
   background: rgb(73 57 84 / 30%);
   backdrop-filter: blur(5px);
   z-index: 3;
+  overflow-y: auto;
 }
 
 .pause-panel[hidden] {
@@ -172,7 +181,7 @@ button:focus-visible {
   box-shadow: 0 14px 0 rgb(73 57 84 / 14%);
 }
 
-.pause-card > img {
+.pause-intro > img {
   width: clamp(62px, 18vw, 76px);
   height: auto;
 }
@@ -208,7 +217,69 @@ button:focus-visible {
 
 #pause-message {
   margin-top: 8px;
-  margin-bottom: 19px;
+  margin-bottom: 12px;
+}
+
+.skin-picker {
+  min-width: 0;
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+}
+
+.skin-picker legend {
+  width: 100%;
+  margin-bottom: 7px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.skin-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.skin-option {
+  padding: 5px 5px 8px;
+  border: 2px solid #e0d7da;
+  border-radius: 16px;
+  background: var(--paper);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.skin-option[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: #ffedb4;
+}
+
+.skin-option:hover {
+  border-color: var(--ink);
+}
+
+.skin-option:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.skin-preview {
+  display: flex;
+  justify-content: center;
+  height: 51px;
+}
+
+.skin-preview img {
+  width: 49px;
+  height: 51px;
+  object-fit: contain;
+}
+
+.pause-card .skin-status {
+  margin-top: 5px;
+  font-size: 12px;
+  min-height: 19px;
 }
 
 .pause-actions {
@@ -226,7 +297,7 @@ button:focus-visible {
 }
 
 .primary-button {
-  background: #ffd369;
+  background: var(--accent);
 }
 
 .secondary-button {
@@ -248,6 +319,46 @@ button:focus-visible {
   clip: rect(0 0 0 0);
   white-space: nowrap;
   clip-path: inset(50%);
+}
+
+@media (max-height: 600px) and (min-width: 540px) {
+  .pause-card {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    column-gap: 23px;
+    width: min(590px, 100%);
+    padding: 18px;
+    align-items: center;
+  }
+
+  .pause-intro {
+    grid-row: span 2;
+  }
+
+  .pause-intro > img {
+    width: 54px;
+  }
+
+  .pause-card .game-name {
+    font-size: 12px;
+  }
+
+  .pause-card h2 {
+    font-size: 24px;
+  }
+
+  .pause-instructions {
+    font-size: 13px !important;
+  }
+
+  #pause-message {
+    margin-bottom: 0;
+  }
+
+  .primary-button,
+  .secondary-button {
+    min-height: 43px;
+  }
 }
 
 @media (max-width: 320px), (max-height: 320px) {

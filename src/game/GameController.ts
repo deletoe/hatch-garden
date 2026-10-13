@@ -2,6 +2,7 @@ import { GameSimulation } from './simulation/GameSimulation';
 import type { DispatchResult, GameEvent, GameSnapshot } from './simulation/types';
 import { AudioController } from './platform/AudioController';
 import { LocalSettings, type GameSettings } from './platform/LocalSettings';
+import type { Skin } from './assets/skins';
 
 export type PauseReason = 'manual' | 'hidden' | 'returning';
 
@@ -93,6 +94,11 @@ export class GameController {
     const next = !settings.soundEnabled;
     this.audio.setEnabled(next);
     this.settingsStore.set({ soundEnabled: next });
+    this.publish();
+  }
+
+  setSkin(skin: Skin): void {
+    this.settingsStore.set({ skin });
     this.publish();
   }
 

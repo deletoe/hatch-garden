@@ -1,4 +1,5 @@
-import { assetUrl } from '../game/assets/manifest';
+import { assetUrl, skinAssetPath } from '../game/assets/manifest';
+import { skinIds, skinStyles, type Skin } from '../game/assets/skins';
 import { GameController, type UiState } from '../game/GameController';
 
 const get = <T extends HTMLElement>(id: string): T => {
@@ -21,6 +22,7 @@ export class GameUi {
   private readonly soundButton = get<HTMLButtonElement>('sound-button');
   private readonly soundIcon = get<HTMLImageElement>('sound-icon');
   private readonly gameShell = get<HTMLElement>('game-shell');
+  private readonly gameCanvas = get<HTMLElement>('game-canvas');
   private readonly fullscreenButton = get<HTMLButtonElement>('fullscreen-button');
   private readonly fullscreenIcon = get<HTMLImageElement>('fullscreen-icon');
   private readonly pauseButton = get<HTMLButtonElement>('pause-button');
@@ -29,6 +31,10 @@ export class GameUi {
   private readonly pauseMessage = get<HTMLElement>('pause-message');
   private readonly resumeButton = get<HTMLButtonElement>('resume-button');
   private readonly restartButton = get<HTMLButtonElement>('restart-button');
+  private readonly skinButtons = skinIds.map((skin) => ({ skin, button: get<HTMLButtonElement>(`skin-${skin}`) }));
+  private readonly skinStatus = get<HTMLElement>('skin-status');
+  private readonly pauseMascot = get<HTMLImageElement>('pause-mascot');
+  private readonly scoreEgg = get<HTMLImageElement>('score-egg');
   private readonly status = get<HTMLElement>('status-message');
   private readonly fullscreenSupported = document.fullscreenEnabled === true && typeof this.gameShell.requestFullscreen === 'function';
   private wasPaused = false;
@@ -36,8 +42,10 @@ export class GameUi {
   private lastSoundEnabled: boolean | undefined;
   private lastPaused: boolean | undefined;
   private lastFullscreen: boolean | undefined;
+  private lastSkin: Skin | undefined;
+  private skinLoading = false;
 
-  constructor(private readonly controller: GameController) {
+  constructor(private readonly controller: GameController, private readonly applySkin: (skin: Skin) => Promise<void>) {
     this.bind();
     controller.subscribe((state) => this.render(state));
   }
@@ -64,12 +72,15 @@ export class GameUi {
       this.controller.setManualPause(false);
       this.announce('新的一局开始了。');
     });
+    for (const { skin, button } of this.skinButtons) {
+      button.addEventListener('click', () => void this.selectSkin(skin));
+    }
 
     window.addEventListener('keydown', (event) => {
       if (!canUseKeyboard(event.target)) {
         return;
       }
-      if (event.code === 'Space' && !event.repeat) {
+      if (event.code === 'Space' && !event.repeat && !(event.target instanceof HTMLElement && event.target.closest('button, a[href]'))) {
         event.preventDefault();
         this.lay();
       }
@@ -82,6 +93,29 @@ export class GameUi {
     });
 
     document.addEventListener('visibilitychange', () => this.controller.setDocumentHidden(document.hidden));
+  }
+
+  private async selectSkin(skin: Skin): Promise<void> {
+    if (this.skinLoading || skin === this.controller.state().settings.skin) return;
+    this.skinLoading = true;
+    this.renderSkinButtons(this.controller.state().settings.skin);
+    this.skinStatus.textContent = '正在换装…';
+    try {
+      await this.applySkin(skin);
+      this.skinStatus.textContent = `已换成${skinStyles[skin].label}`;
+    } catch {
+      this.skinStatus.textContent = '皮肤加载失败，请再试一次。';
+    } finally {
+      this.skinLoading = false;
+      this.renderSkinButtons(this.controller.state().settings.skin);
+    }
+  }
+
+  private renderSkinButtons(selected: Skin): void {
+    for (const { skin, button } of this.skinButtons) {
+      button.setAttribute('aria-pressed', String(skin === selected));
+      button.disabled = this.skinLoading;
+    }
   }
 
   private lay(): void {
@@ -116,6 +150,12 @@ export class GameUi {
   }
 
   private render(state: UiState): void {
+    if (state.settings.skin !== this.lastSkin) {
+      this.lastSkin = state.settings.skin;
+      this.pauseMascot.src = assetUrl(skinAssetPath(state.settings.skin, 'characters/chick-hatch.svg'));
+      this.scoreEgg.src = assetUrl(skinAssetPath(state.settings.skin, 'eggs/egg-whole.svg'));
+      this.renderSkinButtons(state.settings.skin);
+    }
     if (state.score !== this.lastScore) {
       this.lastScore = state.score;
       this.sessionScore.textContent = String(state.score).padStart(3, '0');
@@ -141,6 +181,8 @@ export class GameUi {
 
     if (state.paused && !this.wasPaused && state.pauseReason !== 'hidden') {
       requestAnimationFrame(() => this.resumeButton.focus());
+    } else if (!state.paused && this.wasPaused) {
+      this.gameCanvas.focus({ preventScroll: true });
     }
     this.wasPaused = state.paused;
 

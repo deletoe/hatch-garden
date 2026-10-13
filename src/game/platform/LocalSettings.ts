@@ -1,8 +1,11 @@
+import { isSkin, type Skin } from '../assets/skins';
+
 export type GameSettings = {
   schemaVersion: 1;
   bestSessionEggs: number;
   soundEnabled: boolean;
   volume: number;
+  skin: Skin;
 };
 
 const STORAGE_KEY = 'hatch-garden.settings.v1';
@@ -12,6 +15,7 @@ const defaults = (): GameSettings => ({
   bestSessionEggs: 0,
   soundEnabled: true,
   volume: 0.7,
+  skin: 'reference',
 });
 
 const finiteInteger = (value: unknown): number | null =>
@@ -40,7 +44,8 @@ export class LocalSettings {
     const bestSessionEggs = finiteInteger(patch.bestSessionEggs) ?? this.current.bestSessionEggs;
     const soundEnabled = typeof patch.soundEnabled === 'boolean' ? patch.soundEnabled : this.current.soundEnabled;
     const nextVolume = volume(patch.volume) ?? this.current.volume;
-    this.current = { schemaVersion: 1, bestSessionEggs, soundEnabled, volume: nextVolume };
+    const skin = isSkin(patch.skin) ? patch.skin : this.current.skin;
+    this.current = { schemaVersion: 1, bestSessionEggs, soundEnabled, volume: nextVolume, skin };
     this.write();
     return this.snapshot();
   }
@@ -64,6 +69,7 @@ export class LocalSettings {
         bestSessionEggs: finiteInteger(record.bestSessionEggs) ?? 0,
         soundEnabled: typeof record.soundEnabled === 'boolean' ? record.soundEnabled : true,
         volume: volume(record.volume) ?? 0.7,
+        skin: isSkin(record.skin) ? record.skin : 'reference',
       };
     } catch {
       this.storageAvailable = false;

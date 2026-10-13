@@ -1,3 +1,5 @@
+import type { Skin } from './skins';
+
 export type VectorAsset = {
   key: string;
   path: string;
@@ -38,6 +40,16 @@ export const vectorAssets: readonly VectorAsset[] = [
 ].map((asset) => /^(characters|eggs)\//.test(asset.path)
   ? { ...asset, path: `${asset.path}?v=reference-3` }
   : asset);
+
+const isCharacterAsset = (asset: VectorAsset): boolean => /^(characters|eggs)\//.test(asset.path);
+export const sharedVectorAssets = vectorAssets.filter((asset) => !isCharacterAsset(asset));
+export const skinTextureKey = (skin: Skin, key: string): string => skin === 'classic' ? `classic.${key}` : key;
+export const skinAssetPath = (skin: Skin, path: string): string => skin === 'classic'
+  ? `skins/classic/${path}?v=classic-1`
+  : `${path}?v=reference-3`;
+export const skinVectorAssets = (skin: Skin): VectorAsset[] => vectorAssets.filter(isCharacterAsset).map((asset) => ({
+  ...asset, key: skinTextureKey(skin, asset.key), path: skinAssetPath(skin, asset.path.split('?')[0]),
+}));
 
 export const audioAssets = {
   background: assetUrl('audio/happy-garden.mp3'),
