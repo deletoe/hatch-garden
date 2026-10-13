@@ -20,7 +20,7 @@ describe('MudPlay', () => {
     Object.assign(fixture.pigs[1 - index], { x: 1150, y: 600, targetX: 1100, targetY: 650 });
     const random = vi.spyOn(play as unknown as { between(min: number, max: number): number }, 'between');
     random.mockReturnValueOnce(0.149).mockReturnValueOnce(200);
-    play.update(0.1, 1);
+    play.update(0.1, 0);
     const pig = fixture.pigs[index];
     expect(pig.targetX).toBe(400); // The random 200 px segment points toward the 640 px puddle center.
     expect(pig.targetY).toBe(360);
@@ -35,10 +35,66 @@ describe('MudPlay', () => {
     Object.assign(fixture.pigs[1], { targetX: 1100, targetY: 650 });
     const random = vi.spyOn(play as unknown as { between(min: number, max: number): number }, 'between');
     random.mockReturnValueOnce(0.15).mockReturnValueOnce(Math.PI / 2).mockReturnValueOnce(200);
-    play.update(0.1, 1);
+    play.update(0.1, 0);
     expect(fixture.pigs[0].targetX).toBeCloseTo(200);
     expect(fixture.pigs[0].targetY).toBe(560);
     expect(random).toHaveBeenCalledTimes(3);
+  });
+
+  it.each([[30, 0.325], [60, 0.5], [120, 0.5]])('ramps both pigs to the threshold at %i seconds and caps it at 50 percent', (now, chance) => {
+    for (const index of [0, 1]) {
+      for (const towardPuddle of [true, false]) {
+        const { play, fixture } = prepare();
+        Object.assign(fixture.pigs[index], { x: 200, y: 360, targetX: 200, targetY: 360 });
+        Object.assign(fixture.pigs[1 - index], { x: 1150, y: 600, targetX: 1100, targetY: 650 });
+        const random = vi.spyOn(play as unknown as { between(min: number, max: number): number }, 'between');
+        random.mockReturnValueOnce(towardPuddle ? chance - 0.000001 : chance);
+        if (!towardPuddle) random.mockReturnValueOnce(Math.PI / 2);
+        random.mockReturnValueOnce(200);
+        play.update(0.1, now);
+        expect(fixture.pigs[index].targetX).toBeCloseTo(towardPuddle ? 400 : 200);
+        expect(fixture.pigs[index].targetY).toBe(towardPuddle ? 360 : 560);
+        expect(random).toHaveBeenCalledTimes(towardPuddle ? 2 : 3);
+      }
+    }
+  });
+
+  it('restarts the ramp from 15 percent even when initialized with a nonzero game time', () => {
+    const { play, fixture } = prepare();
+    play.update(0, 120);
+    play.restart(1000);
+    fixture.puddle = { id: 100, x: 640, y: 360, radiusX: 145, radiusY: 64, activatedAt: null };
+    Object.assign(fixture.pigs[1], { x: 1150, y: 600, targetX: 1100, targetY: 650 });
+    const random = vi.spyOn(play as unknown as { between(min: number, max: number): number }, 'between');
+    for (const now of [1000, 1030]) {
+      Object.assign(fixture.pigs[0], { x: 200, y: 360, targetX: 200, targetY: 360 });
+      random.mockReturnValueOnce(0.2);
+      if (now === 1000) random.mockReturnValueOnce(Math.PI / 2);
+      random.mockReturnValueOnce(200);
+      play.update(0, now);
+      expect(fixture.pigs[0].targetY).toBe(now === 1000 ? 560 : 360);
+    }
+  });
+
+  it('resets on leaving mud play and counts the respawn gap without resetting on spawn or resize', () => {
+    const { play, fixture } = prepare();
+    play.update(0, 120); // Enter with a fully ramped chance.
+    play.update(0, 140); // End play and begin a fresh ramp.
+    expect(play.snapshot().puddle).toBeNull();
+    Object.assign(fixture.pigs[0], { x: 200, y: 360, targetX: 200, targetY: 360 });
+    Object.assign(fixture.pigs[1], { x: 1150, y: 600, targetX: 1100, targetY: 650 });
+    const random = vi.spyOn(play as unknown as { between(min: number, max: number): number }, 'between');
+    random.mockReturnValueOnce(640).mockReturnValueOnce(360); // Respawn position.
+    random.mockReturnValueOnce(0.18).mockReturnValueOnce(Math.PI / 2).mockReturnValueOnce(200);
+    play.update(0, 145); // 17.9167%, including the five seconds without a puddle.
+    expect(fixture.pigs[0].targetY).toBe(560);
+    play.setViewport(bounds);
+    Object.assign(fixture.pigs[0], { targetX: 200, targetY: 360 });
+    random.mockReturnValueOnce(0.2).mockReturnValueOnce(200);
+    play.update(0, 150); // 20.8333%, not a new ramp from spawn or resize.
+    expect(fixture.pigs[0].targetX).toBe(400);
+    expect(fixture.pigs[0].targetY).toBe(360);
+    expect(random).toHaveBeenCalledTimes(7);
   });
 
   it('does not draw a mud chance without a puddle or redirect the current segment', () => {

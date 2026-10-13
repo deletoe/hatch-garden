@@ -7,13 +7,16 @@ type InternalPig = Pig & { targetX: number; targetY: number; runSpeed: number };
 const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 const PLAY_SECONDS = 20;
 const RESPAWN_SECONDS = 5;
-const PUDDLE_WANDER_CHANCE = 0.15;
+const PUDDLE_WANDER_CHANCE_MIN = 0.15;
+const PUDDLE_WANDER_CHANCE_MAX = 0.5;
+const PUDDLE_WANDER_RAMP_SECONDS = 60;
 
 /** A single, persistent pair of pigs and a single puddle share the simulation clock. */
 export class MudPlay {
   private readonly pigs: InternalPig[] = [];
   private puddle: MudPuddle | null = null;
   private nextPuddleAt = 0;
+  private wanderingStartedAt = 0;
   private nextId = 1;
   private randomState: number;
 
@@ -25,11 +28,12 @@ export class MudPlay {
 
   restart(now: number): void {
     this.puddle = null;
+    this.wanderingStartedAt = now;
     this.nextPuddleAt = now + this.between(3, 7);
     this.pigs.length = 0;
     for (const [index, name] of (['peppa', 'george'] as const).entries()) {
       const point = { x: this.bounds.width * (index === 0 ? 0.3 : 0.7), y: this.bounds.top + (this.bounds.bottom - this.bounds.top) * 0.6 };
-      const target = this.wanderTarget(point);
+      const target = this.wanderTarget(point, now);
       this.pigs.push({ name, ...point, direction: index === 0 ? 1 : -1, pose: 'idle', state: 'roaming', targetX: target.x, targetY: target.y, runSpeed: 225 * this.scale });
     }
   }
@@ -37,11 +41,12 @@ export class MudPlay {
   update(dt: number, now: number): void {
     if (this.puddle && this.puddle.activatedAt !== null && now - this.puddle.activatedAt >= PLAY_SECONDS) {
       this.puddle = null;
+      this.wanderingStartedAt = now;
       this.nextPuddleAt = now + RESPAWN_SECONDS;
       for (const pig of this.pigs) {
         pig.state = 'roaming';
         pig.pose = 'idle';
-        const target = this.wanderTarget(pig);
+        const target = this.wanderTarget(pig, now);
         pig.targetX = target.x;
         pig.targetY = target.y;
       }
@@ -54,7 +59,7 @@ export class MudPlay {
     for (const pig of this.pigs) {
       if (pig.state === 'jumping') continue;
       if (pig.state === 'roaming' && Math.hypot(pig.targetX - pig.x, pig.targetY - pig.y) < 8 * this.scale) {
-        const target = this.wanderTarget(pig);
+        const target = this.wanderTarget(pig, now);
         pig.targetX = target.x;
         pig.targetY = target.y;
       }
@@ -151,9 +156,11 @@ export class MudPlay {
     return { x: puddle.x + (name === 'peppa' ? -1 : 1) * puddle.radiusX * 0.32, y: puddle.y };
   }
 
-  private wanderTarget(origin: Point): Point {
+  private wanderTarget(origin: Point, now: number): Point {
     const puddle = this.puddle;
-    const towardPuddle = puddle !== null && this.between(0, 1) < PUDDLE_WANDER_CHANCE;
+    const progress = clamp((now - this.wanderingStartedAt) / PUDDLE_WANDER_RAMP_SECONDS, 0, 1);
+    const chance = PUDDLE_WANDER_CHANCE_MIN + (PUDDLE_WANDER_CHANCE_MAX - PUDDLE_WANDER_CHANCE_MIN) * progress;
+    const towardPuddle = puddle !== null && this.between(0, 1) < chance;
     const angle = towardPuddle
       ? Math.atan2(puddle.y - origin.y, puddle.x - origin.x)
       : this.between(0, Math.PI * 2);
