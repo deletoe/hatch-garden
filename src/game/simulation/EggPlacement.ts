@@ -6,7 +6,7 @@ const distanceSquared = (a: Point, b: Point): number => (a.x - b.x) ** 2 + (a.y 
 export class EggPlacement {
   private readonly cells = new Map<string, Point[]>();
   private readonly distanceSquared: number;
-  private available: Point[];
+  private readonly available: Point[];
 
   constructor(slots: readonly Point[], private readonly spacing: number, occupied: readonly Point[]) {
     this.distanceSquared = spacing * spacing;
@@ -31,7 +31,11 @@ export class EggPlacement {
     if (target) {
       this.occupy(target);
       // A reservation can also block neighboring grid locations.
-      this.available = this.available.filter((point) => distanceSquared(point, target!) >= this.distanceSquared);
+      let remaining = 0;
+      for (const point of this.available) {
+        if (distanceSquared(point, target) >= this.distanceSquared) this.available[remaining++] = point;
+      }
+      this.available.length = remaining;
     }
     return target;
   }

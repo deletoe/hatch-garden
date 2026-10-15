@@ -10,6 +10,7 @@ const MAX_STEPS_PER_FRAME = 5;
 type EntityView = {
   sprite: Phaser.GameObjects.Image;
   shadow: Phaser.GameObjects.Image;
+  seenAt: number;
 };
 
 const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
@@ -30,6 +31,8 @@ export class GameScene extends Phaser.Scene {
   private paused = false;
   private pausedAt = 0;
   private skin: Skin = 'reference';
+  private lastSnapshot: GameSnapshot | undefined;
+  private viewRevision = 0;
 
   constructor(private readonly controller: GameController) {
     super('GameScene');
@@ -51,7 +54,6 @@ export class GameScene extends Phaser.Scene {
     if (this.game.canvas.parentElement) resizeWhilePaused.observe(this.game.canvas.parentElement);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => resizeWhilePaused.disconnect());
     this.layout();
-    this.sync(this.controller.state().snapshot);
     const unsubscribe = this.controller.subscribe(({ paused }) => this.setPaused(paused));
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubscribe);
   }
@@ -85,7 +87,7 @@ export class GameScene extends Phaser.Scene {
       }
     }
     this.controller.setSkin(skin);
-    this.sync(this.controller.state().snapshot);
+    this.sync(this.controller.state().snapshot, true);
     this.redrawPaused();
   }
 
@@ -139,7 +141,7 @@ export class GameScene extends Phaser.Scene {
     this.visualScale = clamp(Math.min(width, height) / 720, 0.42, 1);
     this.field.setDisplaySize(width, height);
     this.controller.resizeWorld(width, height);
-    this.sync(this.controller.state().snapshot);
+    this.sync(this.controller.state().snapshot, true);
     this.redrawPaused();
   }
 
@@ -151,7 +153,12 @@ export class GameScene extends Phaser.Scene {
     this.game.pause();
   }
 
-  private sync(snapshot: GameSnapshot): void {
+  private sync(snapshot: GameSnapshot, force = false): void {
+    // Rendering can outpace the 60 Hz simulation. Tweens still update independently.
+    // Layout and skin changes explicitly refresh the same immutable snapshot.
+    if (!force && snapshot === this.lastSnapshot) return;
+    this.lastSnapshot = snapshot;
+    this.viewRevision++;
     this.syncMud(snapshot.puddle, snapshot.time);
     this.syncAdults(snapshot.adults, snapshot.time);
     this.syncEggs(snapshot.eggs);
@@ -183,10 +190,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   private syncAdults(adults: readonly Adult[], time: number): void {
-    const active = new Set(adults.map((adult) => adult.id));
-    this.removeMissing(this.adults, active);
     for (const adult of adults) {
       const view = this.adults.get(adult.id) ?? this.createAdultView(adult);
+      view.seenAt = this.viewRevision;
       const texture = skinTextureKey(this.skin, `hen.${adult.pose}`);
       const jump = adult.jumping ? this.jumpHeight(time, adult.id, 30) : 0;
       if (view.sprite.texture.key !== texture) view.sprite.setTexture(texture);
@@ -201,13 +207,13 @@ export class GameScene extends Phaser.Scene {
         .setAlpha(adult.jumping ? 0.72 : 1)
         .setDepth(adult.y + 8);
     }
+    this.removeMissing(this.adults);
   }
 
   private syncEggs(eggs: readonly Egg[]): void {
-    const active = new Set(eggs.map((egg) => egg.id));
-    this.removeMissing(this.eggs, active);
     for (const egg of eggs) {
       const view = this.eggs.get(egg.id) ?? this.createEggView(egg);
+      view.seenAt = this.viewRevision;
       const texture = skinTextureKey(this.skin, `egg.${egg.state}`);
       if (view.sprite.texture.key !== texture) view.sprite.setTexture(texture);
       if (view.sprite.x === egg.x && view.sprite.y === egg.y && view.sprite.scaleX === 0.55 * this.visualScale) continue;
@@ -220,13 +226,13 @@ export class GameScene extends Phaser.Scene {
         .setDisplaySize(44 * this.visualScale, 10 * this.visualScale)
         .setDepth(egg.y + 2);
     }
+    this.removeMissing(this.eggs);
   }
 
   private syncChicks(chicks: readonly Chick[], time: number): void {
-    const active = new Set(chicks.map((chick) => chick.id));
-    this.removeMissing(this.chicks, active);
     for (const chick of chicks) {
       const view = this.chicks.get(chick.id) ?? this.createChickView(chick);
+      view.seenAt = this.viewRevision;
       const texture = skinTextureKey(this.skin, `chick.${chick.pose}`);
       const jump = chick.jumping ? this.jumpHeight(time, chick.id, 23) : 0;
       if (view.sprite.texture.key !== texture) view.sprite.setTexture(texture);
@@ -241,6 +247,7 @@ export class GameScene extends Phaser.Scene {
         .setAlpha(chick.jumping ? 0.72 : 1)
         .setDepth(chick.y + 5);
     }
+    this.removeMissing(this.chicks);
   }
 
   private syncPigs(pigs: readonly Pig[], time: number): void {
@@ -250,6 +257,7 @@ export class GameScene extends Phaser.Scene {
         view = {
           sprite: this.add.image(pig.x, pig.y, skinTextureKey(this.skin, `${pig.name}.idle`)).setOrigin(0.5, 228 / 256),
           shadow: this.add.image(pig.x, pig.y, 'shadow'),
+          seenAt: this.viewRevision,
         };
         this.pigs.set(pig.name, view);
       }
@@ -263,9 +271,9 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private removeMissing(views: Map<number, EntityView>, active: ReadonlySet<number>): void {
+  private removeMissing(views: Map<number, EntityView>): void {
     for (const [id, view] of views) {
-      if (!active.has(id)) {
+      if (view.seenAt !== this.viewRevision) {
         view.sprite.destroy();
         view.shadow.destroy();
         views.delete(id);
@@ -276,7 +284,7 @@ export class GameScene extends Phaser.Scene {
   private createAdultView(adult: Adult): EntityView {
     const shadow = this.add.image(adult.x, adult.y, 'shadow').setOrigin(0.5);
     const sprite = this.add.image(adult.x, adult.y, skinTextureKey(this.skin, 'hen.idle')).setOrigin(0.5, 0.89);
-    const view = { sprite, shadow };
+    const view = { sprite, shadow, seenAt: this.viewRevision };
     this.adults.set(adult.id, view);
     return view;
   }
@@ -284,7 +292,7 @@ export class GameScene extends Phaser.Scene {
   private createEggView(egg: Egg): EntityView {
     const shadow = this.add.image(egg.x, egg.y + 5, 'shadow').setOrigin(0.5);
     const sprite = this.add.image(egg.x, egg.y, skinTextureKey(this.skin, 'egg.whole')).setOrigin(0.5, 0.87);
-    const view = { sprite, shadow };
+    const view = { sprite, shadow, seenAt: this.viewRevision };
     this.eggs.set(egg.id, view);
     return view;
   }
@@ -292,7 +300,7 @@ export class GameScene extends Phaser.Scene {
   private createChickView(chick: Chick): EntityView {
     const shadow = this.add.image(chick.x, chick.y + 3, 'shadow').setOrigin(0.5);
     const sprite = this.add.image(chick.x, chick.y, skinTextureKey(this.skin, 'chick.hatch')).setOrigin(0.5, 0.875);
-    const view = { sprite, shadow };
+    const view = { sprite, shadow, seenAt: this.viewRevision };
     this.chicks.set(chick.id, view);
     return view;
   }
