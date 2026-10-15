@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { GameController } from '../../game/GameController';
-import type { Adult, Chick, Egg, GameEvent, GameSnapshot, MudPuddle, Pig, PigName } from '../../game/simulation/types';
+import type { GameEvent, RenderAdult, RenderChick, RenderEgg, RenderState, MudPuddle, Pig, PigName } from '../../game/simulation/types';
+import { worldScaleFor } from '../../game/simulation/viewport';
 import { assetUrl, skinTextureKey, skinVectorAssets } from '../../game/assets/manifest';
 import { skinStyles, type Skin } from '../../game/assets/skins';
 
@@ -12,8 +13,6 @@ type EntityView = {
   shadow: Phaser.GameObjects.Image;
   seenAt: number;
 };
-
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 
 export class GameScene extends Phaser.Scene {
   private accumulator = 0;
@@ -31,7 +30,7 @@ export class GameScene extends Phaser.Scene {
   private paused = false;
   private pausedAt = 0;
   private skin: Skin = 'reference';
-  private lastSnapshot: GameSnapshot | undefined;
+  private lastRenderedRevision = -1;
   private viewRevision = 0;
 
   constructor(private readonly controller: GameController) {
@@ -87,7 +86,7 @@ export class GameScene extends Phaser.Scene {
       }
     }
     this.controller.setSkin(skin);
-    this.sync(this.controller.state().snapshot, true);
+    this.sync(this.controller.renderState(), true);
     this.redrawPaused();
   }
 
@@ -108,7 +107,7 @@ export class GameScene extends Phaser.Scene {
       this.accumulator = 0;
     }
 
-    this.sync(this.controller.state().snapshot);
+    this.sync(this.controller.renderState());
     for (const event of events) {
       this.presentEvent(event);
     }
@@ -138,10 +137,10 @@ export class GameScene extends Phaser.Scene {
   private layout(): void {
     const width = Math.max(1, this.scale.width);
     const height = Math.max(1, this.scale.height);
-    this.visualScale = clamp(Math.min(width, height) / 720, 0.42, 1);
+    this.visualScale = worldScaleFor(width, height);
     this.field.setDisplaySize(width, height);
     this.controller.resizeWorld(width, height);
-    this.sync(this.controller.state().snapshot, true);
+    this.sync(this.controller.renderState(), true);
     this.redrawPaused();
   }
 
@@ -153,11 +152,11 @@ export class GameScene extends Phaser.Scene {
     this.game.pause();
   }
 
-  private sync(snapshot: GameSnapshot, force = false): void {
+  private sync(snapshot: RenderState, force = false): void {
     // Rendering can outpace the 60 Hz simulation. Tweens still update independently.
-    // Layout and skin changes explicitly refresh the same immutable snapshot.
-    if (!force && snapshot === this.lastSnapshot) return;
-    this.lastSnapshot = snapshot;
+    // The render buffer is reused, so cache the revision number rather than its identity.
+    if (!force && snapshot.revision === this.lastRenderedRevision) return;
+    this.lastRenderedRevision = snapshot.revision;
     this.viewRevision++;
     this.syncMud(snapshot.puddle, snapshot.time);
     this.syncAdults(snapshot.adults, snapshot.time);
@@ -189,7 +188,7 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private syncAdults(adults: readonly Adult[], time: number): void {
+  private syncAdults(adults: readonly RenderAdult[], time: number): void {
     for (const adult of adults) {
       const view = this.adults.get(adult.id) ?? this.createAdultView(adult);
       view.seenAt = this.viewRevision;
@@ -210,7 +209,7 @@ export class GameScene extends Phaser.Scene {
     this.removeMissing(this.adults);
   }
 
-  private syncEggs(eggs: readonly Egg[]): void {
+  private syncEggs(eggs: readonly RenderEgg[]): void {
     for (const egg of eggs) {
       const view = this.eggs.get(egg.id) ?? this.createEggView(egg);
       view.seenAt = this.viewRevision;
@@ -229,7 +228,7 @@ export class GameScene extends Phaser.Scene {
     this.removeMissing(this.eggs);
   }
 
-  private syncChicks(chicks: readonly Chick[], time: number): void {
+  private syncChicks(chicks: readonly RenderChick[], time: number): void {
     for (const chick of chicks) {
       const view = this.chicks.get(chick.id) ?? this.createChickView(chick);
       view.seenAt = this.viewRevision;
@@ -281,7 +280,7 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private createAdultView(adult: Adult): EntityView {
+  private createAdultView(adult: RenderAdult): EntityView {
     const shadow = this.add.image(adult.x, adult.y, 'shadow').setOrigin(0.5);
     const sprite = this.add.image(adult.x, adult.y, skinTextureKey(this.skin, 'hen.idle')).setOrigin(0.5, 0.89);
     const view = { sprite, shadow, seenAt: this.viewRevision };
@@ -289,7 +288,7 @@ export class GameScene extends Phaser.Scene {
     return view;
   }
 
-  private createEggView(egg: Egg): EntityView {
+  private createEggView(egg: RenderEgg): EntityView {
     const shadow = this.add.image(egg.x, egg.y + 5, 'shadow').setOrigin(0.5);
     const sprite = this.add.image(egg.x, egg.y, skinTextureKey(this.skin, 'egg.whole')).setOrigin(0.5, 0.87);
     const view = { sprite, shadow, seenAt: this.viewRevision };
@@ -297,7 +296,7 @@ export class GameScene extends Phaser.Scene {
     return view;
   }
 
-  private createChickView(chick: Chick): EntityView {
+  private createChickView(chick: RenderChick): EntityView {
     const shadow = this.add.image(chick.x, chick.y + 3, 'shadow').setOrigin(0.5);
     const sprite = this.add.image(chick.x, chick.y, skinTextureKey(this.skin, 'chick.hatch')).setOrigin(0.5, 0.875);
     const view = { sprite, shadow, seenAt: this.viewRevision };

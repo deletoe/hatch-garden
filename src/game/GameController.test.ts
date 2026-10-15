@@ -19,7 +19,11 @@ describe('GameController performance and pause lifecycle', () => {
     const controller = new GameController();
     const listener = vi.fn();
     controller.subscribe(listener);
-    for (let index = 0; index < 120; index++) controller.advance(1 / 60);
+    for (let index = 0; index < 120; index++) {
+      controller.advance(1 / 60);
+      const frame = controller.renderState();
+      expect(controller.renderState()).toBe(frame);
+    }
     expect(snapshots).not.toHaveBeenCalled();
     expect(listener).toHaveBeenCalledTimes(1);
     controller.layEgg();

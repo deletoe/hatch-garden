@@ -1,4 +1,6 @@
 import type { MudPuddle, Pig, PigName } from './types';
+import type { RenderStateBuffer } from './RenderStateBuffer';
+import { worldScaleFor } from './viewport';
 
 export type PlayBounds = { width: number; height: number; left: number; right: number; top: number; bottom: number };
 type Point = { x: number; y: number };
@@ -83,6 +85,10 @@ export class MudPlay {
     };
   }
 
+  writeRenderState(buffer: RenderStateBuffer): void {
+    buffer.writePigs(this.pigs, this.puddle);
+  }
+
   setViewport(bounds: PlayBounds): void {
     const old = this.bounds;
     const remap = (point: Point): Point => ({
@@ -98,6 +104,7 @@ export class MudPlay {
         y: clamp(point.y, bounds.top + radii.radiusY, bounds.bottom - radii.radiusY),
       });
     }
+    this.bounds = bounds;
     for (const pig of this.pigs) {
       const point = remap(pig), target = remap({ x: pig.targetX, y: pig.targetY });
       if (pig.state === 'jumping' && oldPuddle && this.puddle) {
@@ -108,10 +115,9 @@ export class MudPlay {
       pig.targetX = destination.x; pig.targetY = destination.y;
       if (pig.state === 'running') this.setRunSpeed(pig);
     }
-    this.bounds = bounds;
   }
 
-  private get scale(): number { return clamp(Math.min(this.bounds.width, this.bounds.height) / 720, 0.42, 1); }
+  private get scale(): number { return worldScaleFor(this.bounds.width, this.bounds.height); }
 
   private spawnPuddle(): void {
     const { radiusX, radiusY } = this.puddleRadii(this.bounds);
@@ -123,7 +129,7 @@ export class MudPlay {
   }
 
   private puddleRadii(bounds: PlayBounds): { radiusX: number; radiusY: number } {
-    const scale = clamp(Math.min(bounds.width, bounds.height) / 720, 0.42, 1);
+    const scale = worldScaleFor(bounds.width, bounds.height);
     return {
       radiusX: Math.min(145 * scale, (bounds.right - bounds.left) * 0.38),
       radiusY: Math.min(64 * scale, (bounds.bottom - bounds.top) * 0.24),
@@ -164,7 +170,8 @@ export class MudPlay {
     const angle = towardPuddle
       ? Math.atan2(puddle.y - origin.y, puddle.x - origin.x)
       : this.between(0, Math.PI * 2);
-    const distance = this.between(60, Math.max(90, Math.min(this.bounds.width, this.bounds.height) * 0.55));
+    const movementScale = Math.max(1, this.scale);
+    const distance = this.between(60 * movementScale, Math.max(90 * movementScale, Math.min(this.bounds.width, this.bounds.height) * 0.55));
     if (towardPuddle) {
       const step = Math.min(distance, Math.hypot(puddle.x - origin.x, puddle.y - origin.y));
       return { x: origin.x + Math.cos(angle) * step, y: origin.y + Math.sin(angle) * step };

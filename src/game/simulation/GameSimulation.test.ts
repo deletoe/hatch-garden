@@ -1,5 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { GameSimulation } from './GameSimulation';
+import type { MudPlay } from './MudPlay';
 
 const advance = (simulation: GameSimulation, seconds: number): void => {
   const step = 1 / 60;
@@ -214,6 +215,9 @@ describe('GameSimulation', () => {
 
   it('halves an overcrowded flock immediately, then waits 10 seconds before another overcrowding wave', () => {
     const simulation = new GameSimulation(12);
+    // Isolate this departure rule from randomly timed mud play, which exempts jumpers.
+    const mud = (simulation as unknown as { mudPlay: MudPlay }).mudPlay;
+    vi.spyOn(mud, 'isPlayingAt').mockReturnValue(false);
     simulation.setViewport(2000, 2000);
     growFlock(simulation);
     expect(simulation.snapshot().adults.filter((adult) => adult.state === 'roaming')).toHaveLength(26);

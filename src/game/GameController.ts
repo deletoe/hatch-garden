@@ -1,5 +1,5 @@
 import { GameSimulation } from './simulation/GameSimulation';
-import type { DispatchResult, GameEvent, GameSnapshot } from './simulation/types';
+import type { DispatchResult, GameEvent, GameSnapshot, RenderState } from './simulation/types';
 import { AudioController } from './platform/AudioController';
 import { LocalSettings, type GameSettings } from './platform/LocalSettings';
 import type { Skin } from './assets/skins';
@@ -110,6 +110,10 @@ export class GameController {
       pauseReason: this.pauseReason(),
       storageAvailable: this.settingsStore.isPersistent,
     };
+  }
+
+  renderState(): RenderState {
+    return this.simulation.renderState();
   }
 
   private uiState(): UiState {

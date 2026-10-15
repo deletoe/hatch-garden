@@ -67,6 +67,21 @@ export type GameSnapshot = {
   puddle: MudPuddle | null;
 };
 
+export type RenderAdult = Readonly<Pick<Adult, 'id' | 'x' | 'y' | 'direction' | 'pose' | 'jumping'>>;
+export type RenderChick = Readonly<Pick<Chick, 'id' | 'x' | 'y' | 'direction' | 'pose' | 'jumping'>>;
+export type RenderEgg = Readonly<Pick<Egg, 'id' | 'x' | 'y' | 'state'>>;
+
+/** Reused, read-only render data. Valid until the next renderState() refresh; do not retain as history. */
+export type RenderState = {
+  readonly revision: number;
+  readonly time: number;
+  readonly adults: readonly RenderAdult[];
+  readonly eggs: readonly RenderEgg[];
+  readonly chicks: readonly RenderChick[];
+  readonly pigs: readonly Readonly<Pig>[];
+  readonly puddle: Readonly<MudPuddle> | null;
+};
+
 export type GameAction = { type: 'LAY_EGG' } | { type: 'RESTART_SESSION' };
 
 export type DispatchResult =

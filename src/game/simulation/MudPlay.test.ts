@@ -191,6 +191,17 @@ describe('MudPlay', () => {
     }
   });
 
+  it('updates an invited pig to the new large-screen running speed during resize', () => {
+    const { play, fixture } = prepare();
+    Object.assign(fixture.pigs[1], { x: 840, y: 360, targetX: 840, targetY: 360 });
+    play.update(0, 10);
+    expect(play.snapshot().pigs[1].state).toBe('running');
+    play.setViewport({ width: 3840, height: 2160, left: 56, right: 3784, top: 140, bottom: 2128 });
+    const before = play.snapshot().pigs[1].x;
+    play.update(0.1, 10.1);
+    expect(before - play.snapshot().pigs[1].x).toBeCloseTo(45);
+  });
+
   it('keeps exactly two pigs in the viewport through repeated natural play cycles', () => {
     const play = new MudPlay(bounds, 123);
     let activePuddles = 0, lastActive = 0;

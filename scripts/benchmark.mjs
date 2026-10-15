@@ -10,20 +10,22 @@ const seconds = Number(process.argv[2] || 180);
 if (!Number.isFinite(seconds) || seconds <= 0) throw new Error('Duration must be a positive number of seconds');
 const temporary = await mkdtemp(join(tmpdir(), 'hatch-benchmark-'));
 try {
-  for (const name of ['GameSimulation', 'EggPlacement', 'MudPlay']) {
+  const modules = ['GameSimulation', 'EggPlacement', 'MudPlay', 'RenderStateBuffer', 'viewport'];
+  for (const name of modules) {
     let source;
     try { source = await readFile(join(sourceRoot, 'src/game/simulation', `${name}.ts`), 'utf8'); }
     catch (error) {
       if (name !== 'GameSimulation' && error.code === 'ENOENT') continue;
       throw error;
     }
-    const output = ts.transpileModule(source, {
+    let output = ts.transpileModule(source, {
       compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 },
-    }).outputText.replace("'./EggPlacement'", "'./EggPlacement.mjs'").replace("'./MudPlay'", "'./MudPlay.mjs'");
+    }).outputText;
+    for (const dependency of modules) output = output.replaceAll(`'./${dependency}'`, `'./${dependency}.mjs'`);
     await writeFile(join(temporary, `${name}.mjs`), output);
   }
   const { GameSimulation } = await import(pathToFileURL(join(temporary, 'GameSimulation.mjs')));
-  for (const [width, height] of [[1280, 720], [1920, 1080]]) {
+  for (const [width, height] of [[1280, 720], [1920, 1080], [3840, 2160]]) {
     const simulation = new GameSimulation(123);
     simulation.setViewport(width, height);
     const samples = [];

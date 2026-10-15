@@ -1,5 +1,7 @@
 import { EggPlacement } from './EggPlacement';
 import { MudPlay } from './MudPlay';
+import { RenderStateBuffer } from './RenderStateBuffer';
+import { worldScaleFor } from './viewport';
 import type {
   Adult,
   Chick,
@@ -10,6 +12,7 @@ import type {
   GameAction,
   GameEvent,
   GameSnapshot,
+  RenderState,
   WorldSize,
 } from './types';
 
@@ -25,6 +28,7 @@ const IDLE_EXIT_INTERVAL = 16;
 const OVERCROWDED_EXIT_COOLDOWN = 10;
 
 type WorldBounds = WorldSize & {
+  scale: number;
   left: number;
   right: number;
   top: number;
@@ -95,6 +99,8 @@ export class GameSimulation {
   private overcrowdedExitCooldown = 0;
   private cachedSlots: Point[] | undefined;
   private cachedSnapshot: GameSnapshot | undefined;
+  private revision = 0;
+  private readonly renderBuffer = new RenderStateBuffer();
 
   constructor(seed = 0x51c3d) {
     this.random = new SeededRandom(seed);
@@ -128,7 +134,7 @@ export class GameSimulation {
     }
 
     this.layCooldown = LAY_COOLDOWN;
-    this.cachedSnapshot = undefined;
+    this.invalidateState();
     for (const { adult, target } of plans) {
       if (adult) {
         adult.layClock = 0.33;
@@ -150,7 +156,7 @@ export class GameSimulation {
       return;
     }
     this.elapsed += dt;
-    this.cachedSnapshot = undefined;
+    this.invalidateState();
     this.layCooldown = Math.max(0, this.layCooldown - dt);
     this.overcrowdedExitCooldown = Math.max(0, this.overcrowdedExitCooldown - dt);
     this.mudPlay.update(dt, this.elapsed);
@@ -213,11 +219,19 @@ export class GameSimulation {
     }
     this.world = next;
     this.cachedSlots = undefined;
-    this.cachedSnapshot = undefined;
+    this.invalidateState();
   }
 
   getScore(): number {
     return this.score;
+  }
+
+  renderState(): RenderState {
+    if (this.renderBuffer.view.revision !== this.revision) {
+      this.renderBuffer.update(this.revision, this.elapsed, this.adults, this.eggs, this.chicks);
+      this.mudPlay.writeRenderState(this.renderBuffer);
+    }
+    return this.renderBuffer.view;
   }
 
   snapshot(): GameSnapshot {
@@ -239,7 +253,7 @@ export class GameSimulation {
   private createBounds(width: number, height: number): WorldBounds {
     const safeWidth = Math.max(1, Math.round(width));
     const safeHeight = Math.max(1, Math.round(height));
-    const visualScale = this.visualScaleFor(safeWidth, safeHeight);
+    const visualScale = worldScaleFor(safeWidth, safeHeight);
     // These are coordinates for feet/egg bases. They scale with the current
     // canvas and reserve only the small HUD area rather than a fixed-height band.
     const side = Math.min(Math.max(16, 28 * visualScale), safeWidth * 0.16);
@@ -247,7 +261,7 @@ export class GameSimulation {
     const bottom = safeHeight - Math.min(Math.max(10, 16 * visualScale), safeHeight * 0.12);
     const entityMargin = 256 * 0.63 * visualScale;
     return {
-      width: safeWidth, height: safeHeight, left: side, right: safeWidth - side, top, bottom,
+      width: safeWidth, height: safeHeight, scale: visualScale, left: side, right: safeWidth - side, top, bottom,
       entityLeft: -entityMargin, entityRight: safeWidth + entityMargin,
       entityTop: -entityMargin, entityBottom: safeHeight + entityMargin,
     };
@@ -312,11 +326,7 @@ export class GameSimulation {
   private eggSpacing(): number {
     // The egg texture is rendered at 0.55 of its 96 px source width. Use the
     // live visual scale so a narrow phone and a wide desktop pack proportionally.
-    return 52 * this.visualScaleFor(this.world.width, this.world.height);
-  }
-
-  private visualScaleFor(width: number, height: number): number {
-    return clamp(Math.min(width, height) / 720, 0.42, 1);
+    return 52 * this.world.scale;
   }
 
   private updateEggs(dt: number): void {
@@ -335,6 +345,7 @@ export class GameSimulation {
   }
 
   private updateChicks(dt: number): void {
+    const movementScale = Math.max(1, this.world.scale);
     for (let index = this.chicks.length - 1; index >= 0; index -= 1) {
       const chick = this.chicks[index];
       chick.age += dt;
@@ -353,13 +364,13 @@ export class GameSimulation {
         continue;
       }
       if (chick.jumping) { chick.pose = 'idle'; continue; }
-      if (distanceSquared(chick, { x: chick.targetX, y: chick.targetY }) < 14 * 14) {
+      if (distanceSquared(chick, { x: chick.targetX, y: chick.targetY }) < (14 * movementScale) ** 2) {
         const target = this.randomWanderTarget(chick);
         chick.targetX = target.x;
         chick.targetY = target.y;
         chick.escapeTarget = target.escapeTarget;
       }
-      this.moveToward(chick, chick.targetX, chick.targetY, chick.speed * (chick.escapeTarget ? 1.8 : 1), dt);
+      this.moveToward(chick, chick.targetX, chick.targetY, chick.speed * movementScale * (chick.escapeTarget ? 1.8 : 1), dt);
       if (this.isOutsideEntityBounds(chick)) {
         this.chicks.splice(index, 1);
         continue;
@@ -371,7 +382,7 @@ export class GameSimulation {
 
   private createChick(egg: InternalEgg): InternalChick {
     const x = egg.x;
-    const y = egg.y + 7;
+    const y = egg.y + 7 * Math.max(1, this.world.scale);
     const target = this.randomWanderTarget({ x, y });
     return {
       id: this.nextId++, x, y,
@@ -382,6 +393,7 @@ export class GameSimulation {
   }
 
   private updateAdults(dt: number): void {
+    const movementScale = Math.max(1, this.world.scale);
     for (const adult of this.adults) {
       adult.age = this.elapsed - adult.bornAt;
       this.updateMudParticipation(adult);
@@ -395,7 +407,7 @@ export class GameSimulation {
       adult.layClock = Math.max(0, adult.layClock - dt);
       if (adult.jumping) { adult.pose = adult.layClock > 0 ? 'lay' : 'happy'; continue; }
       if (adult.state === 'exiting') {
-        this.moveToward(adult, adult.targetX, adult.targetY, adult.speed * 1.55, dt);
+        this.moveToward(adult, adult.targetX, adult.targetY, adult.speed * movementScale * 1.55, dt);
         adult.pose = Math.floor(this.elapsed * 4.1) % 2 === 0 ? 'walk-a' : 'walk-b';
         if (this.isOutsideEntityBounds(adult)) {
           this.adults.splice(index, 1);
@@ -407,13 +419,13 @@ export class GameSimulation {
         adult.pose = 'lay';
         continue;
       }
-      if (distanceSquared(adult, { x: adult.targetX, y: adult.targetY }) < 16 * 16) {
+      if (distanceSquared(adult, { x: adult.targetX, y: adult.targetY }) < (16 * movementScale) ** 2) {
         const target = this.randomWanderTarget(adult);
         adult.targetX = target.x;
         adult.targetY = target.y;
         adult.escapeTarget = target.escapeTarget;
       }
-      this.moveToward(adult, adult.targetX, adult.targetY, adult.speed, dt);
+      this.moveToward(adult, adult.targetX, adult.targetY, adult.speed * movementScale, dt);
       if (this.isOutsideEntityBounds(adult)) {
         this.adults.splice(index, 1);
         this.events.push({ type: 'adult-left', adultId: adult.id });
@@ -535,7 +547,7 @@ export class GameSimulation {
   }
 
   private layingPoint(adult: InternalAdult): Point {
-    const scale = this.visualScaleFor(this.world.width, this.world.height);
+    const scale = this.world.scale;
     return {
       x: clamp(adult.x + adult.direction * 24 * scale, this.world.left, this.world.right),
       y: clamp(adult.y + 18 * scale, this.world.top, this.world.bottom),
@@ -570,7 +582,7 @@ export class GameSimulation {
   }
 
   private restart(): void {
-    this.cachedSnapshot = undefined;
+    this.invalidateState();
     this.eggs.length = 0;
     this.chicks.length = 0;
     this.adults.length = 0;
@@ -583,5 +595,10 @@ export class GameSimulation {
     this.overcrowdedExitCooldown = 0;
     this.adults.push(this.createAdult(this.world.width / 2, this.world.top + (this.world.bottom - this.world.top) * 0.48));
     this.events.push({ type: 'session-restarted' });
+  }
+
+  private invalidateState(): void {
+    this.cachedSnapshot = undefined;
+    this.revision++;
   }
 }

@@ -10,6 +10,7 @@ A small, static browser game about filling a garden with eggs, watching chicks h
 - Eggs crack and hatch after 5.46 seconds; chicks wander, mature, and may leave the outer play boundary.
 - Peppa and George wander around the garden. When one discovers a mud puddle, the other runs over; nearby chickens join the jumping party for 20 seconds, then a new puddle appears after 5 seconds.
 - Responsive full-viewport playfield, pause controls, sound controls, and an automatic fullscreen toggle where the browser supports it.
+- Large windows scale up the flock and egg spacing together, keeping the whole field fillable with fewer entities. Rendering reuses its data buffers instead of allocating a full snapshot each frame.
 - Switch between the reference and original rounded SVG skins in the pause menu without restarting. Your choice is saved locally; the extra sprite set loads on its first selection.
 - A local-only best score and settings store. There is no account, API, telemetry, game server, database, or WebSocket.
 - SVG artwork, short sound effects, and a 24-second looping background track that loads only after the first egg.
@@ -18,6 +19,7 @@ A small, static browser game about filling a garden with eggs, watching chicks h
 - 蛋会在 5.46 秒后破壳；小鸡随机散步、成长为母鸡，也可能走出外圈。
 - 佩奇和乔治也会散步；一只小猪发现泥坑后会叫另一只跑来，鸡走进正在玩耍的泥坑也一起跳。20 秒后散场，5 秒后出现新泥坑；跳跃不影响成长和下蛋。
 - 游戏区域随视口填充，包含暂停、声音控制和在浏览器支持时自动显示的全屏切换。
+- 大屏同步放大角色与蛋的间距，以更少的实体铺满整个场地；渲染数据缓冲复用，不再逐帧分配完整快照。
 - 暂停页可切换「动画造型」与原来的「圆润造型」，继续当前游戏；选择保存在本机，另一套角色帧首次切换时才加载。
 - 最高分和设置仅保存在本机。没有账号、API、遥测、游戏服务器、数据库或 WebSocket。
 - 美术使用 SVG；背景音乐是第一次下蛋后才请求的 24 秒循环片段。
